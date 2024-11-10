@@ -1,10 +1,12 @@
 import React from 'react'
+import LandingPage from './components/molecules/Landing/page'
 
 function page() {
   return (
-    <div>
-      <h1>Hello World</h1>
-    </div>
+    <>
+    <link rel="shortcut icon" href='../public/images.jpg' type="image/x-icon" />
+    <LandingPage />
+</>
   )
 }
 
