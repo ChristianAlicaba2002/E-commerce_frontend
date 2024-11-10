@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
 import picture1 from './images/homeBackground.jpg'
-import productpic from '../Login/image/background.jpg'
 import Navbar from '../../atoms/Navbar/page'
 
 

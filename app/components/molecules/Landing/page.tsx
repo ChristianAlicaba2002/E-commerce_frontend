@@ -33,9 +33,8 @@ export default function LandingPage() {
               From classic flavors to creative blends, 
               <span className='text-orange-400 font-semibold hover:text-orange-300 
                 transition-colors duration-300'> 
-                DON MACCHIATOS 
-              </span> 
-              guarantees a taste that delights.
+                &ldquo; DON MACCHIATOS &rdquo;
+              </span> guarantees a taste that delights.
             </p>
 
             <Link 

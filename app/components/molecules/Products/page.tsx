@@ -35,7 +35,9 @@ function ProductPage() {
       fetchProduct()
 
       const filterProduct = () => {
-        product?.filter((data:Product) => data.name == "A")
+        product?.sort((a,b) => b.price - a.price)
+
+        return product
       }
       filterProduct()
 

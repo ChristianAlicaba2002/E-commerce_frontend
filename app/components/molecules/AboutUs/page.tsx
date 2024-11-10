@@ -10,32 +10,32 @@ function AboutUs() {
         <a href="/components/molecules/Home"><i className="fa-solid fa-arrow-left text-[#ffffff] text-[2rem] mt-[2rem] ml-[4%]  hover:text-[orange]"></i></a>
           <h1 className='text-[3rem] text-white text-center mt-[-1%]'>About Us</h1>
             <p className='text-[1rem] w-[93%] ml-[7%] font-extralight tracking-wider'>
-            A Don Macchiato is a popular espresso-based coffee drink that combines espresso, steamed milk, and caramel to create a sweet, creamy, and bold flavor profile. It’s often confused with other macchiato drinks like the Latte Macchiato and the Espresso Macchiato, but it has its own distinct preparation and taste.
+            A Don Macchiato is a popular espresso-based coffee drink that combines espresso&#44; steamed milk&#44; and caramel to create a sweet&#44; creamy&#44; and bold flavor profile. It&quot;s often confused with other macchiato drinks like the Latte Macchiato and the Espresso Macchiato&#44; but it has its own distinct preparation and taste.
 
             Origin of the Macchiato
-            The term "macchiato" comes from Italy and means "stained" or "spotted." Traditionally, a macchiato is an espresso "stained" with a small amount of milk to soften the bitterness of the coffee. However, with modern adaptations, especially in North America, various types of macchiatos have developed with additional milk and sweeteners.
-
+            The term &quot;macchiato&quot; comes from Italy and means &quot;stained&quot; or &quot;spotted&quot; Traditionally&#44; a macchiato is an espresso &quot;stained&quot; with a small amount of milk to soften the bitterness of the coffee. However&#44; with modern adaptations&#44; especially in North America&#44; various types of macchiatos have developed with additional milk and sweeteners.
+            
             Don Macchiato Ingredients
-            A Don Macchiato typically contains:
+            A Don Macchiato typically contains&#58;
 
-            Espresso – A shot or double shot of rich, intense espresso forms the base.
-            Steamed Milk – Small amounts of steamed milk are added for creaminess, but not as much as in a latte.
-            Foamed Milk – Light foam on top to add texture.
-            Caramel Drizzle – A caramel topping, usually in a crisscross pattern, adds sweetness and visual appeal.
-            Optional Syrup Flavors – Vanilla, hazelnut, or cinnamon syrups are sometimes added for extra sweetness.
+            Espresso  A shot or double shot of rich&#44; intense espresso forms the base.
+            Steamed Milk  Small amounts of steamed milk are added for creaminess&#44; but not as much as in a latte.
+            Foamed Milk Light foam on top to add texture.
+            Caramel Drizzle A caramel topping&#44; usually in a crisscross pattern&#44; adds sweetness and visual appeal.
+            Optional Syrup Flavors  Vanilla&#44; hazelnut&#44; or cinnamon syrups are sometimes added for extra sweetness.
             Variants of the Macchiato
-            Caramel Macchiato: This popular version adds vanilla syrup to the steamed milk, with the espresso poured over it, followed by a caramel drizzle.
-            Latte Macchiato: Milk is poured first, followed by espresso, resulting in a "spotted" look with the coffee on top.
-            Espresso Macchiato: A simple espresso shot with just a touch of foamed milk, it’s the most classic form of macchiato.
+            Caramel Macchiato&#58; This popular version adds vanilla syrup to the steamed milk&#44; with the espresso poured over it&#44; followed by a caramel drizzle.
+            Latte Macchiato&#58; Milk is poured first&#44; followed by espresso&#44; resulting in a &quot;spotted&quot; look with the coffee on top.
+            Espresso Macchiato&#58; A simple espresso shot with just a touch of foamed milk&#44; it&quot;s the most classic form of macchiato.
             How to Make a Don Macchiato
-            To make one at home, follow these steps:
+            To make one at home&#44; follow these steps&#58;
 
-            Brew Espresso: Use a shot or double shot of high-quality espresso.
-            Steam the Milk: Heat a small amount of milk (usually about a third of the amount of espresso) and froth it.
-            Assemble: Pour the espresso into a glass, then add the steamed milk and top with a dollop of milk foam.
-            Caramel Drizzle: Drizzle caramel syrup over the top in a lattice or crisscross pattern.
+            Brew Espresso&#58; Use a shot or double shot of high-quality espresso.
+            Steam the Milk&#58; Heat a small amount of milk (usually about a third of the amount of espresso) and froth it.
+            Assemble&#58; Pour the espresso into a glass&#44; then add the steamed milk and top with a dollop of milk foam.
+            Caramel Drizzle&#58; Drizzle caramel syrup over the top in a lattice or crisscross pattern.
             Serving Suggestions
-            A Don Macchiato is generally served in a small glass or demitasse cup, enhancing its layered appearance and rich flavor.
+            A Don Macchiato is generally served in a small glass or demitasse cup&#44; enhancing its layered appearance and rich flavor.
             </p>
               <div className='flex'>
                 <Image className='w-[600px] h-[450px] ml-[10%] mt-[2%] rounded-lg' src={Picture1} alt='Picture.jpg'></Image>
