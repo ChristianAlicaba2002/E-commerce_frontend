@@ -1,12 +1,15 @@
 module.exports = {
     content: [
       './app/**/*.{js,ts,jsx,tsx,mdx}',
-      './components/**/*.{js,ts,jsx,tsx,mdx}',
-      './pages/**/*.{js,ts,jsx,tsx,mdx}',
+      './app/components/**/*.{js,ts,jsx,tsx,mdx}',
+      './app/pages/**/*.{js,ts,jsx,tsx,mdx}',
     ],
     theme: {
       extend: {
         keyframes: {
+          fontFamily: {
+            'playfair': ['"Playfair Display"', 'serif'],
+          },
             textColor: {
                 '0%, 100%': { color: '#ffffff' },
                 '25%': { color: '#ffa600' },
@@ -37,7 +40,7 @@ module.exports = {
             '50%': { transform: 'scale(1.2)' },
             '100%': { transform: 'scale(1)'}
           }
-        },
+        },  
 
         animation: {
           'fade-in': 'fade-in 1s ease-out',
@@ -45,7 +48,7 @@ module.exports = {
           'slide-right': 'slide-right 1s ease-out',
           'slow-zoom': 'slow-zoom 20s ease-in-out forwards infinite',
           'bounce-subtle': 'bounce-subtle 2s ease-in-out infinite',
-          'textColor': 'textColor 5s ease infinite',
+          'textColor': 'textColor 5s ease infinite'
         },
       },
     },

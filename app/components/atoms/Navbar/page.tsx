@@ -20,15 +20,16 @@ export default function Navbar() {
          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossOrigin="anonymous" referrerPolicy="no-referrer"/>
 
             <header>
-                    <div className='w-[100%] h-[5vh] "bg-white fixed z-[80]'>
+        
+                    <div className='w-[100%] h-[5vh] bg-white fixed z-[80]'>
                     {/* <h3 className='absolute text-[1.6rem] ml-[2%] mt-[10px] '>Don Macchiatos</h3> */}
                     <a href="/components/molecules/Landing"><Image className='absolute w-[70px] h-[55px] ml-[35px] mt-[0.50rem] rounded-[50%] shadow-orange-500' src={logo} alt='logo.jpg' width={500}></Image></a>
                         <nav>
-                            <div className="navigations w-[100%] bg-[black] mt-[0] p-[20px]">
+                            <div className="navigations w-[100%] bg-[#FFA500] mt-[0] p-[20px]">
                                 <ul className='flex gap-[30%] ml-[75%]'>
-                                    <li><a title='Home' href='/components/molecules/Home'><i className="fa-solid fa-house text-[25px] text-[orange]  hover:text-[white]"/></a></li>
-                                    <li><a title='Products' href="/components/molecules/Products"><i className="fa-solid fa-shop text-[25px] text-[orange]  hover:text-[white]"/></a></li>
-                                    <li className='mr-[16%] cursor-pointer'  title='Menu'><i id='drawerIcon' onClick={clickDrawer} className="fa-solid fa-bars text-[25px] text-[orange] hover:text-[white]"/></li> 
+                                    <li><a title='Home' href='/components/molecules/Home'><i className="fa-solid fa-house text-[25px] text-[black] transition-all duration-300  hover:text-[white]"/></a></li>
+                                    <li><a title='Products' href="/components/molecules/Products"><i className="fa-solid fa-shop text-[25px] text-[black] transition-all duration-300  hover:text-[white]"/></a></li>
+                                    <li className='mr-[16%] cursor-pointer'  title='Menu'><i id='drawerIcon' onClick={clickDrawer} className="fa-solid fa-bars text-[25px] text-[black] transition-all duration-300 hover:text-[white]"/></li> 
                                     {/* <li title='Items you cart'><i id='cartIcon' className="fa-solid fa-cart-shopping text-[25px] cursor-pointer text-black  hover:text-orange-700"/></li> */}
                                 </ul>
                             </div>

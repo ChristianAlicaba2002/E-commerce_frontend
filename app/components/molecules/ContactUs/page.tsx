@@ -42,7 +42,7 @@ return (
               <input id="name" type="text" name="name" placeholder="Your Name" className="text-[1.2rem] rounded-md outline-none text-[black] placeholder:text-[#000000a2] w-[30%] bg-[#ffffffdb] p-[1.3rem] ml-[10%] mt-[3%] hover:bg-[#ffffffa9]"/><br />
               <input id="email" type="email" name="email" placeholder="Your Email" className="text-[1.2rem] rounded-md outline-none text-[black] placeholder:text-[#000000a2] w-[30%]  bg-[#ffffffdb] p-[1.2rem] ml-[10%] mt-[2%]  hover:bg-[#ffffffa9]"/>
               <textarea id="message" name="message" placeholder="Send us message" className="ml-[10%] w-[30%] mt-[-4.5%] text-[1.2rem] rounded-md p-[1.3rem] text-[black] scroll-p-4 placeholder:text-[#000000a2]  bg-[#ffffffdb] absolute max-h-96 outline  hover:bg-[#ffffffa9] border-collapse" ></textarea><br />
-              <button type="submit" className="p-[1.1rem] px-[2rem] text-[black] font-semibold  bg-[orange] hover:bg-[#ffc65b] ml-[10%] rounded-md mt-[2%]">Submit</button>
+              <button type="submit" className="p-[0.55rem] px-[3rem] text-[black] font-semibold  bg-[#FFA500] hover:bg-[#ffc65b] ml-[10%] rounded-md mt-[2%]">Submit</button>
           </form>
         
           <footer className="w-[100%] mt-[5%] py-[1rem] flex gap-[11%]">
