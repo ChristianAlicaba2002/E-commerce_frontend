@@ -48,8 +48,8 @@ module.exports = {
           'slide-right': 'slide-right 1s ease-out',
           'slow-zoom': 'slow-zoom 20s ease-in-out forwards infinite',
           'bounce-subtle': 'bounce-subtle 2s ease-in-out infinite',
-          'textColor': 'textColor 5s ease infinite'
-        },
+          'textColor': 'textColor 5s ease infinite',
+        }
       },
     },
   }

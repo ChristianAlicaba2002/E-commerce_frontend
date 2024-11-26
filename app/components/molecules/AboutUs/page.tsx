@@ -65,40 +65,38 @@ function AboutUs() {
 
   return (
 
-    <div className='bg-gradient-to-b from-amber-50 to-orange-100'>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossOrigin='' referrerPolicy='' />
-        <title>Don Macchiatos About Us</title>
-        <div className='w-[80%] mt-[0.90rem] ml-[10%] h-1 bg-[black]'></div>
-        <a href="/components/molecules/Home"><i className="fa-solid fa-arrow-left text-[black] text-[2rem] mt-[2rem] ml-[4%]  hover:text-[#FFA500]"></i></a>
-          <h1 className='text-[3rem] text-black text-center mt-[-1%]'>About Us</h1>
-            <p className='text-[1rem] text-black w-[93%] ml-[7%] font-medium tracking-wider'>
-                Don Macchiatos is a beloved coffee destination that has mastered the art of crafting exceptional espresso-based beverages. Our signature drink, the Don Macchiato, represents the perfect harmony of rich espresso, velvety steamed milk, and indulgent caramel, creating an unforgettable coffee experience.
+<div className='bg-gradient-to-b from-amber-50 to-orange-100 min-h-screen'>
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossOrigin='' referrerPolicy='' />
+      <title>Don Macchiatos About Us</title>
+      <div className='w-[80%] mt-[0.90rem] mx-auto h-1 bg-[black]'></div>
+      
+      <a href="/components/molecules/Home">
+        <i className="fa-solid fa-arrow-left text-[black] text-[1.5rem] md:text-[2rem] mt-[2rem] ml-[4%] hover:text-[#FFA500]"></i>
+      </a>
+      
+      <h1 className='text-[2rem] md:text-[3rem] text-black text-center mt-[-1%]'>About Us</h1>
+      
+      <p className='text-[0.9rem] md:text-[1rem] text-black w-[90%] md:w-[93%] mx-auto md:ml-[7%] font-medium tracking-wider px-4 md:px-0'></p>
 
-                  Our Story
-                  Founded with a passion for coffee excellence, Don Macchiatos has grown from a small local café into a cherished establishment known for its dedication to quality and innovation. Our skilled baristas combine traditional Italian coffee-making techniques with modern creativity to deliver drinks that delight and inspire.
+      <div className='w-[60%] ml-[20%] mt-[2%] h-[50vh] md:h-[65vh]'>
+        <canvas id="myChart"></canvas>
+      </div>  
 
-                  Our Signature Drinks
-                  At the heart of our menu is the classic Don Macchiato – a perfectly balanced combination of bold espresso and silky steamed milk, crowned with our house-made caramel drizzle. We've expanded our offerings to include unique variations like the Dark Forest Macchiato, Ice Caramel Macchiato, and our popular Matcha series, each crafted with the same attention to detail and quality.
-
-                  Quality & Ingredients
-                  We source only the finest coffee beans, carefully selected and roasted to bring out their optimal flavor profile. Our milk is locally sourced, and our syrups are made with premium ingredients. Every drink is crafted to order, ensuring the freshest and most delightful experience for our customers.
-
-                  Community & Culture
-                  Don Macchiatos is more than just a coffee shop – it's a community hub where people come together to share moments, create memories, and enjoy exceptional coffee. Our warm, welcoming atmosphere and friendly staff make every visit special, whether you're starting your day, meeting friends, or seeking a quiet moment with your favorite drink.
-                  Our Commitment
-                  We are committed to:
-                  Visit Us
-                  Experience the Don Macchiatos difference at our location in Poblacion Liloan. Whether you're a coffee connoisseur or new to the world of specialty coffee, our team is ready to serve you the perfect cup that keeps you coming back for more.
-              </p>
-            <div className=' justify-center w-[70%] mt-[2%] h-[65vh] ml-[20%]'>
-                <canvas id="myChart"></canvas>
-            </div>  
-              <div className='flex'>
-                <Image className='w-[600px] h-[450px] ml-[10%] mt-[2%] rounded-lg' src={Picture1} alt='Picture.jpg'></Image>
-                <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d7848.569861895267!2d123.9917422!3d10.3989294!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x33a9bda7e9ccb2b7%3A0xd7554a9a837925aa!2sDon%20Macchiatos%20-%20Poblacion%20Liloan!5e0!3m2!1sen!2sph!4v1730517270537!5m2!1sen!2sph" width="600" height="450" className='border-[0] mt-[2%] ml-[5%] mb-[3rem] rounded-lg' allowFullScreen  loading="lazy" referrerPolicy='no-referrer-when-downgrade'></iframe>  
-              </div>
-              
+      <div className='flex flex-col md:flex-row gap-4 md:gap-0 px-4 md:px-0'>
+        <Image 
+          className='w-full md:w-[600px] h-[300px] md:h-[450px] mx-auto md:ml-[10%] mt-[2%] rounded-lg object-cover' 
+          src={Picture1} 
+          alt='Picture.jpg'
+        />
+        <iframe 
+          src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d7848.569861895267!2d123.9917422!3d10.3989294!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x33a9bda7e9ccb2b7%3A0xd7554a9a837925aa!2sDon%20Macchiatos%20-%20Poblacion%20Liloan!5e0!3m2!1sen!2sph!4v1730517270537!5m2!1sen!2sph" 
+          className='w-full md:w-[600px] h-[300px] md:h-[450px] mx-auto md:ml-[5%] mt-[2%] mb-[3rem] rounded-lg border-0' 
+          allowFullScreen 
+          loading="lazy" 
+          referrerPolicy='no-referrer-when-downgrade'
+        />
       </div>
+    </div>
   )
 }
 

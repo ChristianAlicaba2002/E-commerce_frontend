@@ -4,10 +4,10 @@ import Link from 'next/link';
 import background from './images/homeBackground.jpg'
 
 
-
 export default function LandingPage() {
   return (
     <>
+      <link rel="shortcut icon" href='../../../../public/images/logo.jpg' type="image/x-icon" />
       <title>Don Macchiatos Landing Page</title>
       <div className="relative min-h-screen w-full bg-black/80 overflow-hidden">
         <Image 
@@ -22,7 +22,7 @@ export default function LandingPage() {
           <div className="space-y-8 animate-fade-in-up">
             <h1 className="text-5xl md:text-7xl font-bold text-[#FFA500] mb-6 
               drop-shadow-lg hover:text-orange-300 transition-colors duration-300
-              animate-pulse-soft animate-textColor">
+              animate-pulse-soft">
               Don Macchiatos
             </h1>
             
@@ -36,7 +36,7 @@ export default function LandingPage() {
                 &ldquo; DON MACCHIATOS &rdquo;
               </span> guarantees a taste that delights.
             </p>
-
+    
             <Link 
               href='/components/molecules/Home' 
               className='inline-block px-8 py-3 bg-[#FFA500] hover:bg-[#f5b745]
