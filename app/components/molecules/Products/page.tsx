@@ -85,38 +85,40 @@ function ProductPage() {
                       key={data.id}
                       className="bg-white rounded-xl shadow-2xl overflow-hidden transform transition-all duration-300 hover:scale-[1.02] hover:shadow-xl"
                     >
+                      <Image
+                        src={imageUrl}
+                        alt={`Product-${data.name}`}
+                        width={1000}
+                        height={1000}
+                        className="w-full h-64 object-cover"
+                      />
+                      <div className="p-6">
+                        <h2 className="text-xl font-bold text-gray-900 mb-2">
+                          {data.name}
+                        </h2>
+                        <p className="text-lg font-serif font-bold text-amber-600 mb-4">
+                          &#8369;{data.price}.00
+                        </p>
+                        <div className="space-y-1">
+                          <h3 className="font-semibold  text-gray-900">
+                            Category:
+                          </h3>
+                          <p className="text-gray-600">{data.category}</p>
+                        </div>
+                        <div className="space-y-2">
+                          <h3 className="font-semibold text-gray-900">
+                            Description:
+                          </h3>
+                          <p className="text-gray-600">{data.description}</p>
+                        </div>
+                      </div>
                       <Link
                         key={data.id}
-                        href={`/components/molecules/Products/${data.id}`}
+                        href={`/components/molecules/Products/${data.id}/${data.name}/${data.category}/${data.price}/${data.description}/${data.image}`}
                         title="View more"
+                        className="p-4 shadow-sm shadow-black  bg-gradient-to-b from-amber-50 to-orange-100 rounded-lg float-right m-5 duration-100 ease-in-out hover:bg-gradient-to-b  hover:from-orange-100 hover:to-amber-50 "
                       >
-                        <Image
-                          src={imageUrl}
-                          alt={`Product-${data.name}`}
-                          width={1000}
-                          height={1000}
-                          className="w-full h-64 object-cover"
-                        />
-                        <div className="p-6">
-                          <h2 className="text-xl font-bold text-gray-900 mb-2">
-                            {data.name}
-                          </h2>
-                          <p className="text-lg font-serif font-bold text-amber-600 mb-4">
-                            ₱{data.price}.00
-                          </p>
-                          <div className="space-y-1">
-                            <h3 className="font-semibold  text-gray-900">
-                              Category:
-                            </h3>
-                            <p className="text-gray-600">{data.category}</p>
-                          </div>
-                          <div className="space-y-2">
-                            <h3 className="font-semibold text-gray-900">
-                              Description:
-                            </h3>
-                            <p className="text-gray-600">{data.description}</p>
-                          </div>
-                        </div>
+                        View more
                       </Link>
                     </div>
                   );

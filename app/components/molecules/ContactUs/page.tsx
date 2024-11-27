@@ -1,6 +1,7 @@
 "use client";
 import Image from "next/image";
 import picture1 from "./images/backgroundContact.jpg";
+
 export default function ContactUs() {
   async function handleSubmit(event: any) {
     event.preventDefault();
@@ -33,7 +34,7 @@ export default function ContactUs() {
         referrerPolicy="no-referrer"
       />
       <title>Don Macchiatos Contact Us</title>
-   
+
       <Image
         src={picture1}
         alt="background"
