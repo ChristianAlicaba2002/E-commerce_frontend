@@ -1,6 +1,5 @@
 import React from "react";
 import Image from "next/image";
-// import "bootstrap/dist/css/bootstrap.min.css";
 
 export default function page({
   params,
@@ -14,6 +13,9 @@ export default function page({
     image: string;
   };
 }) {
+  const decodedName = decodeURIComponent(params.name);
+  const decodedDescription = decodeURIComponent(params.description);
+
   return (
     <>
       <div
@@ -21,10 +23,12 @@ export default function page({
         style={{
           color: "#343a40",
           padding: "5%",
+          margin: "0",
           boxShadow: "0 4px 20px rgba(0, 0, 0, 0.1)",
           display: "flex",
           flexDirection: "column",
           height: "100vh",
+          width: "100%",
         }}
       >
         <Image
@@ -37,11 +41,11 @@ export default function page({
       </div>
 
       <div className="block mt-[-35%] ml-[50%]">
-        <h1 className="mt-3" style={{ fontSize: "2.5rem", fontWeight: "bold" }}>
+        <h1 className="mt-3" style={{ fontSize: "2.5rem" }}>
           ID: {params.id}
         </h1>
-        <h1 className="mt-2" style={{ fontSize: "2rem", fontWeight: "600" }}>
-          Name: &nbsp; {params.name}
+        <h1 className="mt-2 " style={{ fontSize: "2rem" }}>
+          Name: &nbsp; {decodedName}
         </h1>
         <h2 className="mt-2" style={{ fontSize: "1.5rem", color: "red" }}>
           {" "}
@@ -61,7 +65,7 @@ export default function page({
             maxWidth: "600px",
           }}
         >
-          Description: {params.description}
+          Description: {decodedDescription}
         </p>
       </div>
     </>

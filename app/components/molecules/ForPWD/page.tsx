@@ -6,58 +6,58 @@ import {
   FaUniversalAccess,
 } from "react-icons/fa";
 
-interface DiscountParams {
-  basePrice: number;
-  itemCategory:
-    | "Select Category"
-    | "Don Macchiatos"
-    | "Pizza"
-    | "Drinks"
-    | "Dessert"
-    | "Combo";
-}
+// interface DiscountParams {
+//   basePrice: number;
+//   itemCategory:
+//   | "Select Category"
+//   | "Don Macchiatos"
+//   | "Pizza"
+//   | "Drinks"
+//   | "Dessert"
+//   | "Combo";
+// }
 
-export function calculatePWDDiscount({
-  basePrice,
-  itemCategory,
-}: DiscountParams) {
-  const discountPercentage = 20; // PWD discount is typically 20% in the Philippines
-  const discountAmount = basePrice * (discountPercentage / 100);
-  const finalPrice = basePrice - discountAmount;
+// export function calculatePWDDiscount({
+//   basePrice,
+//   itemCategory,
+// }: DiscountParams) {
+//   const discountPercentage = 20; // PWD discount is typically 20% in the Philippines
+//   const discountAmount = basePrice * (discountPercentage / 100);
+//   const finalPrice = basePrice - discountAmount;
 
-  return {
-    originalPrice: basePrice,
-    discountAmount,
-    finalPrice,
-    discountPercentage,
-  };
-}
+//   return {
+//     originalPrice: basePrice,
+//     discountAmount,
+//     finalPrice,
+//     discountPercentage,
+//   };
+// }
 
 function PwdPage() {
-  const [selectedCategory, setSelectedCategory] = React.useState<
-    | "Select Category"
-    | "Don Macchiatos"
-    | "Pizza"
-    | "Drinks"
-    | "Dessert"
-    | "Combo"
-  >("Select Category");
-  const [price, setPrice] = React.useState<number>(0);
-  const [discountResult, setDiscountResult] = React.useState<any>(null);
+  // const [selectedCategory, setSelectedCategory] = React.useState<
+  //   | "Select Category"
+  //   | "Don Macchiatos"
+  //   | "Pizza"
+  //   | "Drinks"
+  //   | "Dessert"
+  //   | "Combo"
+  // >("Select Category");
+  // const [price, setPrice] = React.useState<number>(0);
+  // const [discountResult, setDiscountResult] = React.useState<any>(null);
 
-  const handleCalculateDiscount = () => {
-    const result = calculatePWDDiscount({
-      basePrice: price,
-      itemCategory: selectedCategory as
-        | "Select Category"
-        | "Don Macchiatos"
-        | "Pizza"
-        | "Drinks"
-        | "Dessert"
-        | "Combo",
-    });
-    setDiscountResult(result);
-  };
+  // const handleCalculateDiscount = () => {
+  //   const result = calculatePWDDiscount({
+  //     basePrice: price,
+  //     itemCategory: selectedCategory as
+  //       | "Select Category"
+  //       | "Don Macchiatos"
+  //       | "Pizza"
+  //       | "Drinks"
+  //       | "Dessert"
+  //       | "Combo",
+  //   });
+  //   setDiscountResult(result);
+  // };
 
   const getInTouch = () => {
     window.location.href =
@@ -128,7 +128,7 @@ function PwdPage() {
           </section>
 
           {/* Discount Calculator */}
-          <section
+          {/* <section
             id="Discount_Calculator"
             popover=""
             className="mt-28 bg-[#ececec] p-8 rounded-lg shadow-md px-56"
@@ -147,12 +147,12 @@ function PwdPage() {
                   onChange={(e) =>
                     setSelectedCategory(
                       e.target.value as
-                        | "Select Category"
-                        | "Don Macchiatos"
-                        | "Pizza"
-                        | "Drinks"
-                        | "Dessert"
-                        | "Combo"
+                      | "Select Category"
+                      | "Don Macchiatos"
+                      | "Pizza"
+                      | "Drinks"
+                      | "Dessert"
+                      | "Combo"
                     )
                   }
                 >
@@ -200,7 +200,7 @@ function PwdPage() {
                 </div>
               )}
             </div>
-          </section>
+          </section> */}
 
           <section className="mt-12 text-center">
             <h2 className="text-2xl font-semibold mb-4 text-black">
@@ -208,7 +208,7 @@ function PwdPage() {
             </h2>
             <p className="mb-4 text-black">Contact our PWD Support Team</p>
             <button
-              popoverTarget="Discount_Calculator"
+              onClick={getInTouch}
               className="bg-[#FFA500] text-black font-medium  px-6 py-3 transition-all duration-300 ease-in-out rounded-lg hover:bg-orange-500 shadow-lg hover:shadow-orange-500/50 hover:text-white"
             >
               Get in Touch

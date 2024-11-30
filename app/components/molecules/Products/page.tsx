@@ -20,7 +20,7 @@ function ProductPage() {
   const { getData, error, loading } = useGetDataSpecialProduct(
     "http://127.0.0.1:8000/api/AllSpecialProduct"
   );
-
+  loading
   const products = getData ? getData?.products : error;
 
   return (
@@ -49,11 +49,10 @@ function ProductPage() {
                 key={category}
                 onClick={() => setActiveCategory(category)}
                 className={`px-8 py-1 rounded-md text-lg font-medium transition-all duration-300 
-                      ${
-                        activeCategory === category
-                          ? "bg-amber-600 text-white shadow-lg"
-                          : "bg-white text-amber-600 hover:bg-amber-50"
-                      }`}
+                      ${activeCategory === category
+                    ? "bg-amber-600 text-white shadow-lg"
+                    : "bg-white text-amber-600 hover:bg-amber-50"
+                  }`}
               >
                 {category}
               </button>
@@ -114,7 +113,7 @@ function ProductPage() {
                       </div>
                       <Link
                         key={data.id}
-                        href={`/components/molecules/Products/${data.id}/${data.name}/${data.category}/${data.price}/${data.description}/${data.image}`}
+                        href={`/components/molecules/Products/${data.product_id}/${data.name}/${data.category}/${data.price}/${data.description}/${data.image}`}
                         title="View more"
                         className="p-4 shadow-sm shadow-black  bg-gradient-to-b from-amber-50 to-orange-100 rounded-lg float-right m-5 duration-100 ease-in-out hover:bg-gradient-to-b  hover:from-orange-100 hover:to-amber-50 "
                       >
