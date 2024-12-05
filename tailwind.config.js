@@ -44,6 +44,17 @@ module.exports = {
           "50%": { transform: "scale(1.2)" },
           "100%": { transform: "scale(1)" },
         },
+        "fade-in-down": {
+          "0%": {
+            opacity: "0",
+            transform: "translateY(-10px)",
+          },
+          "100%": {
+            opacity: "1",
+            transform: "translateY(0)",
+            transition: "2s ease-in-out",
+          },
+        },
       },
 
       animation: {
@@ -53,6 +64,7 @@ module.exports = {
         "slow-zoom": "slow-zoom 20s ease-in-out forwards infinite",
         "bounce-subtle": "bounce-subtle 2s ease-in-out infinite",
         textColor: "textColor 5s ease infinite",
+        "fade-in-down": "fade-in-down 0.3s ease-in-out",
       },
     },
   },

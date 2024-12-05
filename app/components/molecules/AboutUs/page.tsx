@@ -3,6 +3,7 @@ import React, { useEffect } from "react";
 import Image from "next/image";
 import { Chart } from "chart.js/auto";
 import { _adapters } from "chart.js";
+import { useRouter } from "next/navigation";
 import Picture1 from "./image/background.jpg";
 
 function AboutUs() {

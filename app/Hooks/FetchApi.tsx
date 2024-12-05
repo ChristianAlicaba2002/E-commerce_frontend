@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-function useGetDataDonMacchiatos(url: string) {
+function FetchApi(api: string) {
   const [getData, setGetData] = useState<any>();
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
@@ -9,7 +9,7 @@ function useGetDataDonMacchiatos(url: string) {
     setLoading(true);
     const fetchData = async () => {
       try {
-        const response = await fetch(url);
+        const response = await fetch(api);
         if (!response.ok) {
           throw new Error(`Status: ${response.status}`);
         }
@@ -22,7 +22,7 @@ function useGetDataDonMacchiatos(url: string) {
       }
     };
     fetchData();
-  }, [url]);
+  }, [api]);
   return { getData, error, loading };
 }
-export default useGetDataDonMacchiatos;
+export default FetchApi;

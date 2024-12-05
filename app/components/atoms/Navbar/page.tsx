@@ -1,7 +1,8 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import logo from "./image/favicon.ico";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Navbar() {
   const [showDrawer, setShowDrawer] = useState(false);
@@ -25,26 +26,31 @@ export default function Navbar() {
 
       <header>
         <div className="w-full h-[5vh] bg-white fixed z-[80]">
-          <a href="/components/molecules/Landing">
+          <Link href="/components/molecules/Landing">
             <Image
               className="absolute w-[70px] h-[55px] ml-[15px] sm:ml-[35px] mt-[0.50rem] rounded-[50%] shadow-orange-500"
               src={logo}
               alt="logo.jpg"
               width={500}
             />
-          </a>
+          </Link>
           <nav>
             <div className="navigations w-full bg-[#FFA500] mt-0 p-[20px]">
               <ul className="hidden sm:flex justify-end gap-[30%] mr-[5%] sm:ml-[75%]">
                 <li>
-                  <a title="Home" href="/components/molecules/Home">
+                  <Link title="Home" href="/components/molecules/Home">
                     <i className="fa-solid fa-house text-[25px] text-black transition-all duration-300 hover:text-white" />
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a title="Products" href="/components/molecules/Products">
+                  <Link title="Products" href="/components/molecules/Products">
                     <i className="fa-solid fa-shop text-[25px] text-black transition-all duration-300 hover:text-white" />
-                  </a>
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/components/organisms/WishlistPage">
+                    <i className="fa-solid fa-heart text-[25px] text-black transition-all duration-300 hover:text-white"></i>
+                  </Link>
                 </li>
                 <li className="cursor-pointer" title="Menu">
                   <i
@@ -68,64 +74,82 @@ export default function Navbar() {
       </header>
 
       <aside>
-        <div className="container fixed flex z-[80] justify-center w-full ml-[38%]">
-          {/* sm:w-auto sm:ml-[44%] */}
+        <div className="container fixed flex z-[80] justify-end w-full">
           {showDrawer && (
             <div
               id="drawer"
-              className="absolute bg-gradient-to-b from-amber-50 to-orange-100 shadow-md shadow-black mt-[4.4%] w-[200px] sm:min-w-[10%] h-auto p-[20px] rounded-b-[10px]"
+              className="absolute bg-gradient-to-b from-amber-50 to-orange-100 shadow-md shadow-black 
+                sm:mt-[9vh] w-[200px] sm:w-[250px] h-auto p-[20px] rounded-b-[10px]
+                right-0 sm:right-4"
             >
               <label
                 onClick={closeDrawer}
-                className="flex justify-start cursor-pointer"
+                className="flex justify-end cursor-pointer mb-4"
                 htmlFor=""
               >
                 ❌
               </label>
-              <ul className="mt-[-5rem] sm:mt-[5rem]">
-                <div className="sm:hidden">
-                  <li className="mb-[5%]">
-                    <a
+              <ul className="flex flex-col gap-4">
+                <div className="sm:hidden space-y-4">
+                  <li>
+                    <Link
                       href="/components/molecules/Home"
-                      className="text-[1rem] cursor-pointer text-[black] hover:text-white"
+                      className="text-[1rem] cursor-pointer text-[black] hover:text-white flex items-center"
                     >
                       <i className="fa-solid fa-house mr-2" />
                       Home
-                    </a>
+                    </Link>
                   </li>
-                  <li className="mb-[5%]">
-                    <a
+                  <li>
+                    <Link
                       href="/components/molecules/Products"
-                      className="text-[1rem] cursor-pointer text-[black] hover:text-white"
+                      className="text-[1rem] cursor-pointer text-[black] hover:text-white flex items-center"
                     >
                       <i className="fa-solid fa-shop mr-2" />
                       Products
-                    </a>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      href="/components/organisms/WishlistPage"
+                      className="text-[1rem] cursor-pointer text-[black] hover:text-white flex items-center"
+                    >
+                      <i className="fa-solid fa-heart  mr-2"></i>
+                      Wishlist
+                    </Link>
                   </li>
                 </div>
-                <li className="mb-[5%]">
-                  <a
+                <li>
+                  <Link
                     href="/components/molecules/AboutUs"
-                    className="text-[1rem] sm:text-[1.2rem] cursor-pointer text-[black] hover:text-amber-600"
+                    className="text-[1rem] sm:text-[1.2rem] cursor-pointer text-[black] hover:text-amber-600 block"
                   >
                     About us
-                  </a>
+                  </Link>
                 </li>
-                <li className="mb-[5%]">
-                  <a
+                <li>
+                  <Link
                     href="/components/molecules/ForPWD"
-                    className="text-[1rem] sm:text-[1.2rem] cursor-pointer text-[black] hover:text-amber-600"
+                    className="text-[1rem] sm:text-[1.2rem] cursor-pointer text-[black] hover:text-amber-600 block"
                   >
                     For PWD
-                  </a>
+                  </Link>
                 </li>
-                <li className="mb-[5%]">
-                  <a
+                <li>
+                  <Link
                     href="/components/molecules/ContactUs"
-                    className="text-[1rem] sm:text-[1.2rem] cursor-pointer text-[black] hover:text-amber-600"
+                    className="text-[1rem] sm:text-[1.2rem] cursor-pointer text-[black] hover:text-amber-600 block"
                   >
                     Contact us
-                  </a>
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href=""
+                    className="text-[1rem] sm:text-[1.2rem] cursor-pointer text-[black] hover:text-amber-600 block"
+                  >
+                    Logout
+                  </Link>
                 </li>
               </ul>
             </div>
