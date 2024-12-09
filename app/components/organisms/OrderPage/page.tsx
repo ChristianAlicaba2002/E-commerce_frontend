@@ -21,6 +21,10 @@ export default function OrderPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [showReceipt, setShowReceipt] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen2, setIsModalOpen2] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
+  const [trackingNumber, setTrackingNumber] = useState("");
+  const [orderStatus, setOrderStatus] = useState(1); // 1: Prepared, 2: Out for Delivery, 3: Received
 
   console.log({ id, name, description, price, image });
 
@@ -31,6 +35,13 @@ export default function OrderPage() {
   const handlePlaceOrder = async () => {
     try {
       setIsLoading(true);
+
+      const generateTrackingNumber = () => {
+        return "TRK" + Math.random().toString(36).substr(2, 9).toUpperCase();
+      };
+
+      const newTrackingNumber = generateTrackingNumber();
+      setTrackingNumber(newTrackingNumber);
 
       const response = await fetch("http://127.0.0.1:8000/api/userOrder", {
         method: "POST",
@@ -48,18 +59,36 @@ export default function OrderPage() {
           quantity: quantity,
           payment: payment,
           total_price: parseFloat(price) * quantity,
+          tracking_number: newTrackingNumber,
         }),
       });
 
+      const data = await response.json();
+
       if (!response.ok) {
         throw new Error("Failed to place order");
+      } else {
+        setTimeout(() => {
+          setModalMessage("Order Successfully Thank you for your order 💗");
+          setIsModalOpen2(true);
+          setTimeout(() => {
+            setIsModalOpen2(false);
+            setShowReceipt(true);
+          }, 3000);
+        }, 900);
       }
-
-      setShowReceipt(true);
     } catch (error) {
-      alert("Failed to place order. Please try again.");
+      setTimeout(() => {
+        setModalMessage("Please input your information");
+        setIsModalOpen2(true);
+        setTimeout(() => {
+          setIsModalOpen2(false);
+        }, 3500);
+      }, 1000);
+      setShowReceipt(false);
     } finally {
       setIsLoading(false);
+      return;
     }
   };
 
@@ -76,9 +105,18 @@ export default function OrderPage() {
       <div className="min-h-screen bg-[#FDF6EC] p-8">
         {showReceipt ? (
           <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-md p-8">
+            <button
+              onClick={() => setShowReceipt(false)}
+              className="px-6 py-2  bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors"
+            >
+              <i className="fa-solid fa-arrow-left mr-2"></i>
+              Back to Order
+            </button>
+
             <h2 className="text-2xl font-bold text-center mb-6">
-              Order Receipt
+              Order Status
             </h2>
+
             <div className="border-t border-b py-4 space-y-2">
               <div className="flex justify-between">
                 <span className="font-semibold">Product:</span>
@@ -97,32 +135,109 @@ export default function OrderPage() {
                 <span>₱{(parseFloat(price) * quantity).toFixed(2)}</span>
               </div>
             </div>
-            <div className="flex w-full justify-center mb-4 mt-5">
-              <p className="font-semibold">Delivery Information</p>
-            </div>
-            <div className=" justify-between mb-2">
-              <span>Full Name: </span>
-              <span>{fullName}</span>
-            </div>
-            <div className=" justify-between mb-2">
-              <div>
-                <span>Phone Number: </span>
+
+            <div className="border-t border-b py-4 space-y-2">
+              <div className="flex w-full justify-center mb-4 mt-5">
+                <p className="font-semibold">Delivery Information</p>
+              </div>
+              <div className="flex justify-between">
+                <span className="font-semibold">Full Name: </span>
+                <span>{fullName}</span>
+              </div>
+              <div className="flex justify-between ">
+                <span className="font-semibold">Phone Number: </span>
                 <span>{phoneNumber}</span>
               </div>
-            </div>
-            <div className=" justify-between mb-2">
-              <div>
-                <span>Address: </span>
+              <div className="flex justify-between">
+                <span className="font-semibold">Address: </span>
                 <span>{address}</span>
               </div>
             </div>
-            <div className="mt-6 text-center">
-              <button
-                onClick={() => setShowReceipt(false)}
-                className="px-6 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors"
-              >
-                Back to Order
-              </button>
+
+            <div className="mt-6 p-4 bg-orange-50 rounded-lg">
+              <div className="text-center">
+                <h3 className="font-bold text-lg mb-2">Track Your Order</h3>
+                <p className="text-gray-600 mb-2">Your tracking number:</p>
+                <p className="font-mono text-xl font-bold text-orange-600">
+                  {trackingNumber}
+                </p>
+                <p className="text-sm text-gray-500 mt-2">
+                  Use this number to track your order status
+                </p>
+              </div>
+            </div>
+            <div className="mt-8 px-4">
+              <div className="flex items-center justify-between relative">
+                <div className="absolute left-0 top-1/2 transform -translate-y-1/2 w-full h-1 bg-gray-200">
+                  <div
+                    className="h-full bg-orange-500 transition-all duration-500"
+                    style={{ width: `${((orderStatus - 1) / 2) * 100}%` }}
+                  ></div>
+                </div>
+
+                <div className="relative z-10 flex flex-col items-center">
+                  <div
+                    className={`w-8 h-8 rounded-full flex items-center justify-center ${
+                      orderStatus >= 1
+                        ? "bg-orange-500 text-white"
+                        : "bg-gray-200"
+                    }`}
+                  >
+                    <i className="fas fa-box"></i>
+                  </div>
+                  <p className="mt-2 text-sm font-medium">Prepared</p>
+                </div>
+
+                <div className="relative z-10 flex flex-col items-center">
+                  <div
+                    className={`w-8 h-8 rounded-full flex items-center justify-center ${
+                      orderStatus >= 2
+                        ? "bg-orange-500 text-white"
+                        : "bg-gray-200"
+                    }`}
+                  >
+                    <i className="fas fa-truck"></i>
+                  </div>
+                  <p className="mt-2 text-sm font-medium">Out for Delivery</p>
+                </div>
+
+                <div className="relative z-10 flex flex-col items-center">
+                  <div
+                    className={`w-8 h-8 rounded-full flex items-center justify-center ${
+                      orderStatus >= 3
+                        ? "bg-green-500 text-white"
+                        : "bg-gray-200"
+                    }`}
+                  >
+                    <i className="fas fa-check"></i>
+                  </div>
+                  <p className="mt-2 text-sm font-medium">Received</p>
+                </div>
+              </div>
+
+              <div className="mt-8 text-center">
+                <button
+                  onClick={() =>
+                    setOrderStatus((prev) => (prev < 3 ? prev + 1 : 1))
+                  }
+                  disabled={orderStatus === 3}
+                  className={`px-4 py-2 bg-orange-500 text-white rounded-lg transition-colors ${
+                    orderStatus === 3
+                      ? "opacity-50 cursor-not-allowed"
+                      : "hover:bg-orange-600"
+                  }`}
+                >
+                  Update Status
+                </button>
+                <p className="mt-2 text-sm text-gray-600">
+                  Current Status:{" "}
+                  {orderStatus === 1
+                    ? "Order Prepared"
+                    : orderStatus === 2
+                    ? "Out for Delivery"
+                    : "Order Received"}
+                </p>
+              </div>
             </div>
           </div>
         ) : (
@@ -134,8 +249,8 @@ export default function OrderPage() {
               <i className="fa-solid fa-arrow-left mr-2"></i>
               Back to Products
             </Link>
-            <div className="flex flex-col md:flex-row md:gap-12">
-              <div className="w-full md:w-2/5 relative aspect-square mb-6 md:mb-0">
+            <div className="flex flex-col lg:flex-row lg:gap-12">
+              <div className="w-full lg:w-2/5 relative aspect-square mb-6 lg:mb-0">
                 <Image
                   src={`http://127.0.0.1:8000/api/storage/${image}`}
                   alt={`Product-${name}`}
@@ -145,21 +260,21 @@ export default function OrderPage() {
                 />
               </div>
 
-              <div className="w-full md:w-3/5">
-                <h1 className="text-2xl md:text-3xl font-bold text-gray-800">
+              <div className="w-full lg:w-3/5">
+                <h1 className="text-2xl lg:text-3xl font-bold text-gray-800">
                   {name}
                 </h1>
-                <p className="mt-2 md:mt-3 text-base md:text-lg text-gray-600">
+                <p className="mt-2 lg:mt-3 text-base lg:text-lg text-gray-600">
                   {description}
                 </p>
-                <p className="mt-4 md:mt-6 mb-3 md:mb-5 text-xl md:text-2xl font-semibold text-orange-500">
+                <p className="mt-4 lg:mt-6 mb-3 lg:mb-5 text-xl lg:text-2xl font-semibold text-orange-500">
                   &#8369;{price}.00
                 </p>
 
                 <label className="text-gray-700">Payment: {payment}</label>
                 <br />
                 <select
-                  className="w-40 mt-2 px-3 py-2 border rounded-lg"
+                  className="w-full lg:w-40 mt-2 px-3 py-2 border rounded-lg"
                   name="payment"
                   onChange={(e) => setPayment(e.target.value)}
                   id=""
@@ -187,7 +302,7 @@ export default function OrderPage() {
                   <p className="mt-2 text-gray-700">Message: {message}</p>
                 </div>
 
-                <div className="mt-6 flex flex-col sm:flex-row items-stretch sm:items-center gap-3 md:gap-4">
+                <div className="mt-6 flex flex-col sm:flex-row items-stretch sm:items-center gap-3 lg:gap-4">
                   <input
                     type="number"
                     min="1"
@@ -204,10 +319,27 @@ export default function OrderPage() {
                   </button>
                   <button
                     onClick={() => setIsModalOpen(true)}
-                    className="w-full sm:w-auto px-6 py-2 border-2 text-black rounded-lg hover:bg-blue-600 hover:text-white transition-colors disabled:opacity-50"
+                    className="w-full duration-300 ease-in-out sm:w-auto px-6 py-2 border-2 text-black rounded-lg bg-blue-200 hover:bg-blue-600 hover:text-white transition-colors disabled:opacity-50"
                   >
                     Add information
                   </button>
+                  {isModalOpen2 && (
+                    <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-800 bg-opacity-70 p-4">
+                      <div className="bg-white p-6 rounded-lg shadow-lg">
+                        <p className="text-lg font-semibold text-gray-800">
+                          {modalMessage}
+                        </p>
+
+                        <button
+                          type="button"
+                          onClick={() => setIsModalOpen2(false)}
+                          className="mt-4 w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                        >
+                          Close
+                        </button>
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
@@ -310,7 +442,7 @@ export default function OrderPage() {
                   htmlFor="message"
                   className="block text-sm font-medium text-gray-700"
                 >
-                  Add message
+                  Add a message
                 </label>
                 <textarea
                   name="message"

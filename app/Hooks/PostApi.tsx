@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 
-function PostApi(api: string) {
+function PostApi(api: string, formData: any) {
   const [data, setData] = useState<null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
-  const postData = async () => {
+  const postData = async (data: any) => {
     try {
       setLoading(true);
       setError(null);
@@ -25,7 +25,7 @@ function PostApi(api: string) {
     }
   };
 
-  return { data, loading, error, postData };
+  return { postData, data, loading, error };
 }
 
 export default PostApi;

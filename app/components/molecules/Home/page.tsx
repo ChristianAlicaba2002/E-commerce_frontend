@@ -16,33 +16,34 @@ interface Product {
 }
 
 function MainPage() {
-  const [wishlist, setWishlist] = useState<Product[]>([]);
+  const [favorite, setFavorite] = useState<Product[]>([]);
   const { getData, error, loading } = FetchApi(
     "http://127.0.0.1:8000/api/allDonMacProduct"
   );
   loading;
   const product = getData ? getData?.products : error;
 
-  const toggleWishlist = (product: Product) => {
-    setWishlist((prev) => {
-      const isInWishlist = prev.some((item) => item.id === product.id);
-      if (isInWishlist) {
-        const newWishlist = prev.filter((item) => item.id !== product.id);
-        localStorage.setItem("wishlist", JSON.stringify(newWishlist));
-        return newWishlist;
+  const toggleFavorite = (product: Product) => {
+    setFavorite((prev) => {
+      const isInFavorites = prev.some((item) => item.id === product.id);
+      if (isInFavorites) {
+        const favorites = prev.filter((item) => item.id !== product.id);
+        localStorage.setItem("favorites", JSON.stringify(favorites));
+        return favorites;
       } else {
-        const newWishlist = [...prev, product];
-        localStorage.setItem("wishlist", JSON.stringify(newWishlist));
-        return newWishlist;
+        const favorites = [...prev, product];
+        localStorage.setItem("favorites", JSON.stringify(favorites));
+        return favorites;
       }
     });
-    window.dispatchEvent(new Event("wishlistUpdate"));
+    window.dispatchEvent(new Event("favoritesUpdate"));
+    window.dispatchEvent(new Event("favoritesUpdated"));
   };
 
   useEffect(() => {
-    const savedWishlist = localStorage.getItem("wishlist");
-    if (savedWishlist) {
-      setWishlist(JSON.parse(savedWishlist));
+    const savedFavorites = localStorage.getItem("favorites");
+    if (savedFavorites) {
+      setFavorite(JSON.parse(savedFavorites));
     }
   }, []);
 
@@ -51,20 +52,20 @@ function MainPage() {
       <Navbar />
       <title>Home</title>
       <section>
-        <div className="container absolute w-[100%] h-[100vh]">
+        <div className="container absolute w-[100%] h-[100vh] md:h-[100%] md:w-[100%] lg:w-[100%] lg:h-[100%]">
           <Image
             src={picture1}
             alt="background"
-            className="w-[100%] fixed z-[-50] duration-100 animate-slow-zoom object-cover h-screen"
+            className="w-[150%] fixed z-[-50] duration-100 animate-slow-zoom object-cover h-screen sm:w-[100%] md:w-[100%] lg:w-[100%]"
           />
 
-          <div className="mt-[35%] md:mt-[25%] lg:mt-[15%] w-[100%] h-[auto] z-[100] bg-gradient-to-b from-amber-50 to-orange-100">
-            <h1 className="text-4xl sm:text-5xl md:text-6xl pt-10 mx-4 md:ml-[7rem] font-sans text-amber-900 mb-6 font-semibold">
+          <div className="mt-[35%] w-[100%] h-[auto] z-[100] bg-gradient-to-b from-amber-50 to-orange-100 md:w-[100%] lg:w-[100%] xl:w-[100%] 2xl:w-[100%] md:mt-[25%] lg:mt-[15%]">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl pt-10 mx-4 md:ml-[3rem] font-sans text-amber-900 mb-6 font-semibold">
               Frozen Drinks to Cool you Down <br className="hidden sm:block" />{" "}
               This Summer!
             </h1>
 
-            <div className="gap-4 md:gap-8 w-[95%] md:w-[90%] mx-auto md:ml-[7%] mt-[30px] md:mt-[50px] grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+            <div className="w-full grid grid-cols-1 px-1 md:gap-0 md:w-[100%] sm:w-[100%] lg:w-[100%] xl:w-[100%] 2xl:w-[100%] mx-auto md:grid-cols-2 lg:grid-cols-4">
               {product && product.length > 0 ? (
                 product.map((data: Product, index: number) => {
                   {
@@ -72,46 +73,44 @@ function MainPage() {
                       a.name.localeCompare(b.name)
                     );
                   }
-
                   const imageUrl = `http://127.0.0.1:8000/api/storage/${data.image}`;
                   return (
                     <div
-                      key={`${data.id} - ${index}`}
-                      className="bg-white rounded-xl shadow-lg overflow-hidden transform transition-all duration-300 hover:shadow-xl"
+                      key={data.id}
+                      className="bg-white flex flex-col gap-0 mx-auto mb-4 w-[90%] h-auto rounded-lg shadow-md overflow-hidden transform transition-all duration-300 hover:shadow-lg"
                     >
                       <div className="relative group">
                         <Image
                           src={imageUrl}
                           alt={`Product-${data.name}`}
-                          width={1000}
-                          height={1000}
-                          className="w-full h-64 object-cover transition-transform duration-300 group-hover:scale-105"
+                          width={500}
+                          height={500}
+                          className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
                         />
                         <div className="absolute inset-0 bg-black bg-opacity-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                           <Link
                             href={`/components/molecules/Home/${data.product_id}/${data.name}/${data.price}/${data.description}/${data.image}`}
-                            className="bg-white text-amber-600 px-4 py-2 rounded-md font-medium transform -translate-y-2 group-hover:translate-y-0 transition-all duration-300"
+                            className="bg-white text-amber-600 px-3 py-1 text-sm rounded-md font-medium transform -translate-y-2 group-hover:translate-y-0 transition-all duration-300"
                           >
                             Quick View
                           </Link>
                         </div>
                       </div>
 
-                      <div className="p-6">
-                        <div className="flex justify-between items-start mb-4">
-                          <h2 className="text-xl font-bold text-gray-900">
+                      <div className="p-4">
+                        <div className="block justify-between items-start mb-2">
+                          <h5 className="text-lg font-serif text-amber-900">
                             {data.name}
-                          </h2>
-                          <p className="text-xl font-bold text-amber-600">
+                          </h5>
+                          <p className="text-lg font-bold text-amber-600">
                             &#8369;{data.price}.00
                           </p>
                         </div>
-
-                        <p className="text-gray-600 text-sm mb-4 line-clamp-2">
+                        <p className="text-gray-600 text-xs mb-3 line-clamp-2">
                           {data.description}
                         </p>
 
-                        <div className="flex gap-2">
+                        <div className="flex gap-1">
                           <Link
                             href={{
                               pathname: "/components/organisms/OrderPage",
@@ -123,7 +122,7 @@ function MainPage() {
                                 image: data.image,
                               },
                             }}
-                            className="flex-1 bg-amber-600 text-center text-white py-2 px-4 rounded-md hover:bg-amber-700 transition-colors duration-300"
+                            className="flex-1 bg-amber-500 text-center text-white text-sm py-1.5 px-3 rounded-md hover:bg-amber-400 transition-colors duration-300"
                             onClick={() => {
                               console.log("Added to cart:", data.name);
                             }}
@@ -131,14 +130,14 @@ function MainPage() {
                             Add to Cart
                           </Link>
                           <button
-                            className="p-2 text-amber-600 border border-amber-600 rounded-md hover:bg-amber-50 transition-colors duration-300"
-                            onClick={() => toggleWishlist(data)}
+                            className="p-1.5 text-amber-600 border border-amber-600 rounded-md hover:bg-amber-50 transition-colors duration-300"
+                            onClick={() => toggleFavorite(data)}
                           >
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
-                              className="h-6 w-6"
+                              className="h-5 w-5"
                               fill={
-                                wishlist.some((item) => item.id === data.id)
+                                favorite.some((item) => item.id === data.id)
                                   ? "currentColor"
                                   : "none"
                               }

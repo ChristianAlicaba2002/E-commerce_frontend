@@ -17,32 +17,33 @@ interface ProductType {
 
 function ProductPage() {
   const [activeCategory, setActiveCategory] = useState("Pizza");
-  const [wishlist, setWishlist] = useState<ProductType[]>([]);
+  const [favorites, setFavorites] = useState<ProductType[]>([]);
+
   const { getData, error, loading } = FetchApi(
     "http://127.0.0.1:8000/api/AllSpecialProduct"
   );
   const products = getData ? getData?.products : error;
 
-  const toggleWishlist = (product: ProductType) => {
-    setWishlist((prev) => {
+  const toggleFavorites = (product: ProductType) => {
+    setFavorites((prev) => {
       const isInWishlist = prev.some((item) => item.id === product.id);
       if (isInWishlist) {
         const newWishlist = prev.filter((item) => item.id !== product.id);
-        localStorage.setItem("wishlist", JSON.stringify(newWishlist));
+        localStorage.setItem("favorites", JSON.stringify(newWishlist));
         return newWishlist;
       } else {
         const newWishlist = [...prev, product];
-        localStorage.setItem("wishlist", JSON.stringify(newWishlist));
+        localStorage.setItem("favorites", JSON.stringify(newWishlist));
         return newWishlist;
       }
     });
-    window.dispatchEvent(new Event("wishlistUpdate"));
+    window.dispatchEvent(new Event("favoritesUpdate"));
   };
 
   useEffect(() => {
-    const savedWishlist = localStorage.getItem("wishlist");
-    if (savedWishlist) {
-      setWishlist(JSON.parse(savedWishlist));
+    const savedFavorites = localStorage.getItem("favorites");
+    if (savedFavorites) {
+      setFavorites(JSON.parse(savedFavorites));
     }
   }, []);
 
@@ -71,11 +72,10 @@ function ProductPage() {
                 key={category}
                 onClick={() => setActiveCategory(category)}
                 className={`px-8 py-1 rounded-md text-lg font-medium transition-all duration-300 
-                      ${
-                        activeCategory === category
-                          ? "bg-amber-600 text-white shadow-lg"
-                          : "bg-white text-amber-600 hover:bg-amber-50"
-                      }`}
+                      ${activeCategory === category
+                    ? "bg-amber-600 text-white shadow-lg"
+                    : "bg-white text-amber-600 hover:bg-amber-50"
+                  }`}
               >
                 {category}
               </button>
@@ -91,7 +91,7 @@ function ProductPage() {
               </h3>
             )}
 
-          <div className="w-[90%] ml-[5%] grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="w-[90%] ml-[5%] grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {products && products.length > 0 ? (
               products
                 .filter((item: any) => item.category === activeCategory)
@@ -100,53 +100,55 @@ function ProductPage() {
                   return (
                     <div
                       key={data.id}
-                      className="bg-white rounded-xl shadow-lg overflow-hidden transform transition-all duration-300 hover:shadow-xl"
+                      className="bg-white rounded-lg shadow-md overflow-hidden transform transition-all duration-300 hover:shadow-lg"
                     >
                       <div className="relative group">
                         <Image
                           src={imageUrl}
                           alt={`Product-${data.name}`}
-                          width={1000}
-                          height={1000}
-                          className="w-full h-64 object-cover transition-transform duration-300 group-hover:scale-105"
+                          width={500}
+                          height={500}
+                          className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
                         />
                         <div className="absolute inset-0 bg-black bg-opacity-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                           <Link
                             href={`/components/molecules/Products/${data.product_id}/${data.name}/${data.category}/${data.price}/${data.description}/${data.image}`}
-                            className="bg-white text-amber-600 px-4 py-2 rounded-md font-medium transform -translate-y-2 group-hover:translate-y-0 transition-all duration-300"
+                            className="bg-white text-amber-600 px-3 py-1 text-sm rounded-md font-medium transform -translate-y-2 group-hover:translate-y-0 transition-all duration-300"
                           >
                             Quick View
                           </Link>
                         </div>
                       </div>
 
-                      <div className="p-6">
-                        <div className="flex justify-between items-start mb-4">
-                          <h2 className="text-xl font-bold text-gray-900">
+                      <div className="p-4">
+                        <div className="block justify-between items-start mb-2">
+                          <h5 className="text-lg font-serif  text-amber-900">
                             {data.name}
-                          </h2>
-                          <p className="text-xl font-bold text-amber-600">
+                          </h5>
+                          <p className="text-lg font-bold text-amber-600">
                             &#8369;{data.price}.00
                           </p>
                         </div>
-
-                        <p className="text-gray-600 text-sm mb-4 line-clamp-2">
+                        <p className="text-gray-600 text-xs mb-3 line-clamp-2">
+                          {data.category}
+                        </p>
+                        <p className="text-gray-600 text-xs mb-3 line-clamp-2">
                           {data.description}
                         </p>
 
-                        <div className="flex gap-2">
+                        <div className="flex gap-1">
                           <Link
                             href={{
                               pathname: "/components/organisms/OrderPage",
                               query: {
-                                id: data.id,
+                                id: data.product_id,
                                 name: data.name,
                                 description: data.description,
                                 price: data.price,
                                 image: data.image,
                               },
                             }}
-                            className="flex-1 bg-amber-600 text-center text-white py-2 px-4 rounded-md hover:bg-amber-700 transition-colors duration-300"
+                            className="flex-1 bg-amber-500 text-center text-white text-sm py-1.5 px-3 rounded-md hover:bg-amber-400 transition-colors duration-300"
                             onClick={() => {
                               console.log("Added to cart:", data.name);
                             }}
@@ -154,14 +156,14 @@ function ProductPage() {
                             Add to Cart
                           </Link>
                           <button
-                            className="p-2 text-amber-600 border border-amber-600 rounded-md hover:bg-amber-50 transition-colors duration-300"
-                            onClick={() => toggleWishlist(data)}
+                            className="p-1.5 text-amber-600 border border-amber-600 rounded-md hover:bg-amber-50 transition-colors duration-300"
+                            onClick={() => toggleFavorites(data)}
                           >
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
-                              className="h-6 w-6"
+                              className="h-5 w-5"
                               fill={
-                                wishlist.some((item) => item.id === data.id)
+                                favorites.some((item) => item.id === data.id)
                                   ? "currentColor"
                                   : "none"
                               }

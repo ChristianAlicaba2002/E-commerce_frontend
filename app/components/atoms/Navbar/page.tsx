@@ -6,6 +6,25 @@ import Link from "next/link";
 
 export default function Navbar() {
   const [showDrawer, setShowDrawer] = useState(false);
+  const [favoritesCount, setFavoritesCount] = useState(0);
+
+  useEffect(() => {
+    const getFavoritesCount = () => {
+      const favorites = JSON.parse(localStorage.getItem("favorites") || "[]");
+      setFavoritesCount(favorites.length);
+    };
+
+    getFavoritesCount();
+
+    window.addEventListener("storage", getFavoritesCount);
+
+    window.addEventListener("favoritesUpdated", getFavoritesCount);
+
+    return () => {
+      window.removeEventListener("storage", getFavoritesCount);
+      window.removeEventListener("favoritesUpdated", getFavoritesCount);
+    };
+  }, []);
 
   const clickDrawer = () => {
     setShowDrawer(!showDrawer);
@@ -48,8 +67,13 @@ export default function Navbar() {
                   </Link>
                 </li>
                 <li>
-                  <Link href="/components/organisms/WishlistPage">
-                    <i className="fa-solid fa-heart text-[25px] text-black transition-all duration-300 hover:text-white"></i>
+                  <Link href="/components/organisms/FavoritePage">
+                    <div className="relative">
+                      <i className="fa-solid fa-heart text-[25px] text-black transition-all duration-300 hover:text-white"></i>
+                      <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                        {favoritesCount}
+                      </span>
+                    </div>
                   </Link>
                 </li>
                 <li className="cursor-pointer" title="Menu">
@@ -78,9 +102,8 @@ export default function Navbar() {
           {showDrawer && (
             <div
               id="drawer"
-              className="absolute bg-gradient-to-b from-amber-50 to-orange-100 shadow-md shadow-black 
-                sm:mt-[9vh] w-[200px] sm:w-[250px] h-auto p-[20px] rounded-b-[10px]
-                right-0 sm:right-4"
+              className="absolute bg-gradient-to-b from-amber-50 to-orange-100 shadow-md shadow-black right-0 w-[200px] h-auto p-[20px] rounded-b-[10px]
+                sm:mt-[9vh]  sm:right-4"
             >
               <label
                 onClick={closeDrawer}
@@ -111,11 +134,16 @@ export default function Navbar() {
                   </li>
                   <li>
                     <Link
-                      href="/components/organisms/WishlistPage"
+                      href="/components/organisms/FavoritePage"
                       className="text-[1rem] cursor-pointer text-[black] hover:text-white flex items-center"
                     >
-                      <i className="fa-solid fa-heart  mr-2"></i>
-                      Wishlist
+                      <div className="relative">
+                        <i className="fa-solid fa-heart text-[25px] text-black transition-all duration-300 hover:text-white"></i>
+                        <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                          {favoritesCount}
+                        </span>
+                      </div>
+                      <p className="ml-2">Favorites</p>
                     </Link>
                   </li>
                 </div>

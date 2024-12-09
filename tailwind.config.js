@@ -49,6 +49,10 @@ module.exports = {
             opacity: "0",
             transform: "translateY(-10px)",
           },
+          fadeIn: {
+            "0%": { opacity: "0" },
+            "100%": { opacity: "1" },
+          },
           "100%": {
             opacity: "1",
             transform: "translateY(0)",
@@ -63,6 +67,7 @@ module.exports = {
         "slide-right": "slide-right 1s ease-out",
         "slow-zoom": "slow-zoom 20s ease-in-out forwards infinite",
         "bounce-subtle": "bounce-subtle 2s ease-in-out infinite",
+        "status-transition": "fadeIn 0.5s ease-in-out",
         textColor: "textColor 5s ease infinite",
         "fade-in-down": "fade-in-down 0.3s ease-in-out",
       },
