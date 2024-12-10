@@ -48,7 +48,7 @@ export default function LandingPage() {
             </p>
 
             <Link
-              href="/components/organisms/LoginPage"
+              href="/components/molecules/Home"
               className="inline-block px-8 py-3 bg-[#FFA500] hover:bg-[#f5b745]
                 text-black font-bold rounded-full transform hover:scale-100
                 transition-all duration-300 ease-in-out shadow-lg hover:shadow-orange-500/50

@@ -60,7 +60,7 @@ function MainPage() {
           />
 
           <div className="mt-[35%] w-[100%] h-[auto] z-[100] bg-gradient-to-b from-amber-50 to-orange-100 md:w-[100%] lg:w-[100%] xl:w-[100%] 2xl:w-[100%] md:mt-[25%] lg:mt-[15%]">
-            <h1 className="text-4xl sm:text-5xl md:text-6xl pt-10 mx-4 md:ml-[3rem] font-sans text-amber-900 mb-6 font-semibold">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl pt-10 mx-4 md:ml-[2rem] font-sans text-amber-900 mb-6 font-semibold">
               Frozen Drinks to Cool you Down <br className="hidden sm:block" />{" "}
               This Summer!
             </h1>

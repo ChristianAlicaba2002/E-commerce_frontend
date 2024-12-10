@@ -171,14 +171,7 @@ export default function Navbar() {
                     Contact us
                   </Link>
                 </li>
-                <li>
-                  <Link
-                    href=""
-                    className="text-[1rem] sm:text-[1.2rem] cursor-pointer text-[black] hover:text-amber-600 block"
-                  >
-                    Logout
-                  </Link>
-                </li>
+
               </ul>
             </div>
           )}

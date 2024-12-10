@@ -28,7 +28,7 @@ export default function page({
 
       <div className="max-w-6xl mx-auto bg-white rounded-3xl shadow-xl overflow-hidden">
         <div className="grid md:grid-cols-2">
-          <div className="relative h-[600px] overflow-hidden">
+          <div className="relative h-[650px] overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-br from-orange-300/20 to-amber-100/20" />
             <Image
               src={`http://127.0.0.1:8000/api/storage/${params.image}`}

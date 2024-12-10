@@ -54,22 +54,24 @@ export default function RegisterPage() {
         formDataToSend.append(key, value);
       });
 
-      // Log FormData entries for debugging
       for (let [key, value] of formDataToSend.entries()) {
         console.log(`${key}:`, value);
       }
 
       const response = await fetch("http://127.0.0.1:8000/api/Register", {
         method: "POST",
+        headers: {
+          'Content-Type': 'application/json'
+        },
         body: formDataToSend,
       });
 
       const data = await response.json();
-      console.log("Response data:", data); // Log the response for debugging
+      console.log("Response data:", data);
 
       if (data.ok) {
         setTimeout(() => {
-          setModalMessage("Registration successful , you can now login");
+          setModalMessage(data.message || "Registration successful , you can now login");
           setIsModalOpen(true);
           setTimeout(() => {
             setIsModalOpen(false);

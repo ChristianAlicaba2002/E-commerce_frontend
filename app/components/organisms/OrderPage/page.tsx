@@ -223,7 +223,7 @@ export default function OrderPage() {
                   disabled={orderStatus === 3}
                   className={`px-4 py-2 bg-orange-500 text-white rounded-lg transition-colors ${
                     orderStatus === 3
-                      ? "opacity-50 cursor-not-allowed"
+                      ? "opacity-35 bg-green-500 cursor-not-allowed"
                       : "hover:bg-orange-600"
                   }`}
                 >
@@ -277,7 +277,6 @@ export default function OrderPage() {
                   className="w-full lg:w-40 mt-2 px-3 py-2 border rounded-lg"
                   name="payment"
                   onChange={(e) => setPayment(e.target.value)}
-                  id=""
                 >
                   <option value="Cash on Delivery">Cash on Delivery</option>
                   <option value="Credit/Debit Cards">Credit/Debit Cards</option>
@@ -305,8 +304,8 @@ export default function OrderPage() {
                 <div className="mt-6 flex flex-col sm:flex-row items-stretch sm:items-center gap-3 lg:gap-4">
                   <input
                     type="number"
-                    min="1"
                     value={quantity}
+                    min={1}
                     onChange={(e) => setQuantity(parseInt(e.target.value))}
                     className="w-full sm:w-20 px-3 py-2 border rounded-lg"
                   />
@@ -418,7 +417,30 @@ export default function OrderPage() {
                     id="phoneNumber"
                     className="w-full p-3 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500 transition-all duration-200"
                     placeholder="Enter your phone number"
-                    onChange={(e) => setPhoneNumber(e.target.value)}
+                    value={phoneNumber}
+                    onChange={(e) => {
+                      const value = e.target.value.replace(/\D/g, "");
+                      if (value.length <= 11) {
+                        setPhoneNumber(value);
+                      }
+                    }}
+                    onKeyPress={(e) => {
+                      if (!/[0-9]/.test(e.key)) {
+                        e.preventDefault();
+                      }
+                      if (phoneNumber.length >= 11 && e.key !== "Backspace") {
+                        e.preventDefault();
+                      }
+                    }}
+                    min="0"
+                    onInput={(e) => {
+                      if (e.currentTarget.value.length > 11) {
+                        e.currentTarget.value = e.currentTarget.value.slice(
+                          0,
+                          11
+                        );
+                      }
+                    }}
                   />
                 </div>
 

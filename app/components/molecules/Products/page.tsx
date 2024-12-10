@@ -26,15 +26,15 @@ function ProductPage() {
 
   const toggleFavorites = (product: ProductType) => {
     setFavorites((prev) => {
-      const isInWishlist = prev.some((item) => item.id === product.id);
-      if (isInWishlist) {
-        const newWishlist = prev.filter((item) => item.id !== product.id);
-        localStorage.setItem("favorites", JSON.stringify(newWishlist));
-        return newWishlist;
+      const isFavorites = prev.some((item) => item.id === product.id);
+      if (isFavorites) {
+        const newFavorites = prev.filter((item) => item.id !== product.id);
+        localStorage.setItem("favorites", JSON.stringify(newFavorites));
+        return newFavorites;
       } else {
-        const newWishlist = [...prev, product];
-        localStorage.setItem("favorites", JSON.stringify(newWishlist));
-        return newWishlist;
+        const newFavorites = [...prev, product];
+        localStorage.setItem("favorites", JSON.stringify(newFavorites));
+        return newFavorites;
       }
     });
     window.dispatchEvent(new Event("favoritesUpdate"));
