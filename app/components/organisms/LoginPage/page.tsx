@@ -36,42 +36,64 @@ export default function LoginPage() {
         body: JSON.stringify({ email, password }),
       });
 
+      // First try to parse JSON response
+      let data;
+      try {
+        data = await response.json();
+      } catch (e) {
+        setModalMessage("Invalid response from server");
+        setIsModalOpen(true);
+        throw new Error("Invalid response from server");
+      }
+
       if (!response.ok) {
-        const errorMessage = await response.text();
-        setTimeout(() => {
-          setModalMessage("Error during login");
-          setIsModalOpen(true);
-          setTimeout(() => {
-            setIsModalOpen(false);
-            setLoading(false);
-          }, 3000);
-        }, 500);
-        const inputs = document.querySelectorAll("forms-input");
+        setModalMessage("Invalid email or password");
+        setIsModalOpen(true);
+        const inputs = document.querySelectorAll(".forms-input");
         inputs.forEach((input) => {
           (input as HTMLInputElement).style.borderColor = "red";
         });
+        throw new Error(data.message || "Login failed");
       }
-      const data = await response.json();
-      console.log(data);
 
       if (data.user) {
-        alert("Login Successfully");
-        router.push("/components/molecules/Home");
+        setModalMessage("Login Successful!");
+        setIsModalOpen(true);
+        setTimeout(() => {
+          router.push("/components/molecules/Home");
+        }, 1500);
       }
     } catch (error) {
-      return;
+      console.error("Login error:", error);
+    } finally {
+      setTimeout(() => {
+        setIsModalOpen(false);
+        setLoading(false);
+      }, 3000);
     }
   };
 
-  const inputPassword = document.getElementById("password") as HTMLInputElement;
+  // Move password toggle to useEffect to avoid DOM errors
+  useEffect(() => {
+    const togglePassword = () => {
+      const input = document.getElementById("password") as HTMLInputElement;
+      if (input) {
+        input.type = input.type === "password" ? "text" : "password";
+      }
+    };
 
-  const showPasswordButton = () => {
-    if (inputPassword.type === "password") {
-      inputPassword.type = "text";
-    } else {
-      inputPassword.type = "password";
+    const showPasswordBtn = document.getElementById("showPassword");
+    if (showPasswordBtn) {
+      showPasswordBtn.addEventListener("click", togglePassword);
     }
-  };
+
+    return () => {
+      const showPasswordBtn = document.getElementById("showPassword");
+      if (showPasswordBtn) {
+        showPasswordBtn.removeEventListener("click", togglePassword);
+      }
+    };
+  }, []);
 
   return (
     <>
@@ -139,9 +161,7 @@ export default function LoginPage() {
                     id="showPassword"
                     name="showPassword"
                     type="checkbox"
-                    required
                     className="mr-2"
-                    onClick={showPasswordButton}
                   />
                   <label
                     className="text-gray-500 text-[.90rem] -mt-10 cursor-pointer"

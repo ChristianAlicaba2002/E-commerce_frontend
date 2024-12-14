@@ -7,7 +7,6 @@ import Link from "next/link";
 import FetchApi from "@/app/Hooks/FetchApi";
 interface Product {
   id: number;
-  product_id: string;
   name: string;
   price: number;
   image: string;
@@ -76,7 +75,7 @@ function MainPage() {
                   const imageUrl = `http://127.0.0.1:8000/api/storage/${data.image}`;
                   return (
                     <div
-                      key={data.id}
+                      key={`${data.id}-${index}`}
                       className="bg-white flex flex-col gap-0 mx-auto mb-4 w-[90%] h-auto rounded-lg shadow-md overflow-hidden transform transition-all duration-300 hover:shadow-lg"
                     >
                       <div className="relative group">
@@ -89,7 +88,7 @@ function MainPage() {
                         />
                         <div className="absolute inset-0 bg-black bg-opacity-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                           <Link
-                            href={`/components/molecules/Home/${data.product_id}/${data.name}/${data.price}/${data.description}/${data.image}`}
+                            href={`/components/molecules/Home/${data.id}/${data.name}/${data.price}/${data.description}/${data.image}`}
                             className="bg-white text-amber-600 px-3 py-1 text-sm rounded-md font-medium transform -translate-y-2 group-hover:translate-y-0 transition-all duration-300"
                           >
                             Quick View

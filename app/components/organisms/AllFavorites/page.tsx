@@ -16,7 +16,7 @@ interface ProductType {
   image: string;
 }
 
-function FavoritesPage() {
+function AllFovorites() {
   const [isLoading, setIsLoading] = useState(false);
   const [favoritesItems, setFavoritesItems] = useState<ProductType[]>([]);
 
@@ -108,7 +108,7 @@ function FavoritesPage() {
                     href={{
                       pathname: "/components/organisms/OrderPage",
                       query: {
-                        id: data.product_id,
+                        id: data.id,
                         name: data.name,
                         description: data.description,
                         price: data.price,
@@ -143,4 +143,4 @@ function FavoritesPage() {
   );
 }
 
-export default FavoritesPage;
+export default AllFovorites;

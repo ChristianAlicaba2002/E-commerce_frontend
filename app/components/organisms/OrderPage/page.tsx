@@ -7,6 +7,7 @@ import { useSearchParams } from "next/navigation";
 export default function OrderPage() {
   const searchParams = useSearchParams();
   const id = searchParams.get("id");
+  const product_id = searchParams.get("product_id");
   const name = searchParams.get("name");
   const description = searchParams.get("description");
   const price = searchParams.get("price");
@@ -28,7 +29,7 @@ export default function OrderPage() {
 
   console.log({ id, name, description, price, image });
 
-  if (!id || !price || !name || !description || !image) {
+  if (!id || product_id || !price || !name || !description || !image) {
     return <div>Invalid product details</div>;
   }
 
@@ -69,7 +70,7 @@ export default function OrderPage() {
         throw new Error("Failed to place order");
       } else {
         setTimeout(() => {
-          setModalMessage("Order Successfully Thank you for your order 💗");
+          setModalMessage("Order Successfully Thank you!!");
           setIsModalOpen2(true);
           setTimeout(() => {
             setIsModalOpen2(false);
@@ -177,11 +178,10 @@ export default function OrderPage() {
 
                 <div className="relative z-10 flex flex-col items-center">
                   <div
-                    className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                      orderStatus >= 1
-                        ? "bg-orange-500 text-white"
-                        : "bg-gray-200"
-                    }`}
+                    className={`w-8 h-8 rounded-full flex items-center justify-center ${orderStatus >= 1
+                      ? "bg-orange-500 text-white"
+                      : "bg-gray-200"
+                      }`}
                   >
                     <i className="fas fa-box"></i>
                   </div>
@@ -190,11 +190,10 @@ export default function OrderPage() {
 
                 <div className="relative z-10 flex flex-col items-center">
                   <div
-                    className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                      orderStatus >= 2
-                        ? "bg-orange-500 text-white"
-                        : "bg-gray-200"
-                    }`}
+                    className={`w-8 h-8 rounded-full flex items-center justify-center ${orderStatus >= 2
+                      ? "bg-orange-500 text-white"
+                      : "bg-gray-200"
+                      }`}
                   >
                     <i className="fas fa-truck"></i>
                   </div>
@@ -203,11 +202,10 @@ export default function OrderPage() {
 
                 <div className="relative z-10 flex flex-col items-center">
                   <div
-                    className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                      orderStatus >= 3
-                        ? "bg-green-500 text-white"
-                        : "bg-gray-200"
-                    }`}
+                    className={`w-8 h-8 rounded-full flex items-center justify-center ${orderStatus >= 3
+                      ? "bg-green-500 text-white"
+                      : "bg-gray-200"
+                      }`}
                   >
                     <i className="fas fa-check"></i>
                   </div>
@@ -221,11 +219,10 @@ export default function OrderPage() {
                     setOrderStatus((prev) => (prev < 3 ? prev + 1 : 1))
                   }
                   disabled={orderStatus === 3}
-                  className={`px-4 py-2 bg-orange-500 text-white rounded-lg transition-colors ${
-                    orderStatus === 3
-                      ? "opacity-35 bg-green-500 cursor-not-allowed"
-                      : "hover:bg-orange-600"
-                  }`}
+                  className={`px-4 py-2 bg-orange-500 text-white rounded-lg transition-colors ${orderStatus === 3
+                    ? "opacity-35 bg-green-500 cursor-not-allowed"
+                    : "hover:bg-orange-600"
+                    }`}
                 >
                   Update Status
                 </button>
@@ -234,8 +231,8 @@ export default function OrderPage() {
                   {orderStatus === 1
                     ? "Order Prepared"
                     : orderStatus === 2
-                    ? "Out for Delivery"
-                    : "Order Received"}
+                      ? "Out for Delivery"
+                      : "Order Received"}
                 </p>
               </div>
             </div>
@@ -271,7 +268,9 @@ export default function OrderPage() {
                   &#8369;{price}.00
                 </p>
 
-                <label className="text-gray-700">Payment: {payment}</label>
+                <label className="text-gray-700">
+                  <strong>Payment</strong>: {payment}
+                </label>
                 <br />
                 <select
                   className="w-full lg:w-40 mt-2 px-3 py-2 border rounded-lg"
@@ -286,7 +285,8 @@ export default function OrderPage() {
                 </select>
 
                 <div className="mt-4 text-gray-700">
-                  Total: &#8369;{(parseFloat(price) * quantity).toFixed(2)}
+                  <strong>Total</strong>: &#8369;
+                  {(parseFloat(price) * quantity).toFixed(2)}
                 </div>
 
                 <div className="mt-6">

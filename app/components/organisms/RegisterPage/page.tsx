@@ -60,54 +60,51 @@ export default function RegisterPage() {
 
       const response = await fetch("http://127.0.0.1:8000/api/Register", {
         method: "POST",
-        headers: {
-          'Content-Type': 'application/json'
-        },
         body: formDataToSend,
       });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
 
       const data = await response.json();
       console.log("Response data:", data);
 
-      if (data.ok) {
+      if (data) {
         setTimeout(() => {
-          setModalMessage(data.message || "Registration successful , you can now login");
-          setIsModalOpen(true);
+          setModalMessage(data.message || "Registration successful, you can now login");
+          setIsModalOpen(true)
           setTimeout(() => {
-            setIsModalOpen(false);
-          }, 5000);
-        }, 500);
-        router.refresh();
-        router.push("/components/organisms/LoginPage");
-        setFormData({
-          firstName: formData.firstName,
-          lastName: formData.lastName,
-          birthMonth: formData.birthMonth,
-          birthDay: formData.birthDay,
-          birthYear: formData.birthYear,
-          gender: formData.gender,
-          email: formData.email,
-          password: formData.password,
-          image: formData.image,
-        });
-      } else if (!data.ok) {
-        setTimeout(() => {
-          setModalMessage(
-            data.message || "Email is already used, please make a new one."
-          );
-          setIsModalOpen(true);
-          setTimeout(() => {
-            setIsModalOpen(false);
-          }, 3000);
-        }, 900);
-        const inputs = document.querySelectorAll(".forms-input");
-        inputs.forEach((input) => {
-          (input as HTMLInputElement).style.borderColor = "red";
-        });
-        formData.email = "";
+            setIsModalOpen(false)
+            router.push("/components/organisms/LoginPage");
+          }, 1000)
+
+        }, 3000)
+      } else if (data.email === formData.email) {
+        setModalMessage(
+          data.message || "Email is already used, please make a new one."
+        );
+        setIsModalOpen(true);
+        setTimeout(() => setIsModalOpen(false), 3000);
+
+        const emailInput = document.querySelector(
+          'input[name="email"]'
+        ) as HTMLInputElement;
+        if (emailInput) {
+          emailInput.style.borderColor = "red";
+        }
+
+        setFormData((prev) => ({
+          ...prev,
+          email: "",
+        }));
       }
+
     } catch (err) {
-      setError("Something went wrong. Please try again.");
+      setModalMessage('Something went wrong. Please try again.')
+      setIsModalOpen(true)
+      setTimeout(() => setIsModalOpen(false), 3000)
     } finally {
       setLoading(false);
     }

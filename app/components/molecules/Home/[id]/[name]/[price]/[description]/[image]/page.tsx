@@ -7,6 +7,7 @@ export default function page({
 }: {
   params: {
     id: string;
+    product_id: string;
     name: string;
     price: string;
     description: string;

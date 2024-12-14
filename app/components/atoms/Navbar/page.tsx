@@ -67,7 +67,7 @@ export default function Navbar() {
                   </Link>
                 </li>
                 <li>
-                  <Link href="/components/organisms/FavoritePage">
+                  <Link href="/components/organisms/AllFavorites">
                     <div className="relative">
                       <i className="fa-solid fa-heart text-[25px] text-black transition-all duration-300 hover:text-white"></i>
                       <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
@@ -134,7 +134,7 @@ export default function Navbar() {
                   </li>
                   <li>
                     <Link
-                      href="/components/organisms/FavoritePage"
+                      href="/components/organisms/AllFavorites"
                       className="text-[1rem] cursor-pointer text-[black] hover:text-white flex items-center"
                     >
                       <div className="relative">
