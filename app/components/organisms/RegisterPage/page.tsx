@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
@@ -31,6 +31,12 @@ export default function RegisterPage() {
   });
   const [error, setError] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isPasswordMatch, setIsPasswordMatch] = useState('')
+  const [isPasswordMatchOpen, setIsPasswordMatchOpen] = useState(false)
+  const [isEmailDuplicate, setIsEmailDuplicate] = useState('')
+  const [isEmailDuplicateOpen, setIsEmailDuplicateOpen] = useState(false)
+  const [isSuccess, setIsSuccess] = useState('')
+  const [isSuccessOpen, setIsSuccessOpen] = useState(false)
   const [modalMessage, setModalMessage] = useState("");
 
   const handleChange = (
@@ -43,11 +49,10 @@ export default function RegisterPage() {
     }));
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError("");
-    setLoading(true);
 
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    setLoading(true)
     try {
       const formDataToSend = new FormData();
       Object.entries(formData).forEach(([key, value]) => {
@@ -58,7 +63,7 @@ export default function RegisterPage() {
         console.log(`${key}:`, value);
       }
 
-      const response = await fetch("http://127.0.0.1:8000/api/Register", {
+      const response = await fetch("http://127.0.0.1:8000/api/auth/Register", {
         method: "POST",
         body: formDataToSend,
       });
@@ -66,49 +71,40 @@ export default function RegisterPage() {
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-
-
       const data = await response.json();
       console.log("Response data:", data);
 
-      if (data) {
+      const testPasword = /[A-Z]-[0-9]/
+
+      if (testPasword.test(formData.password)) {
+        setIsPasswordMatch('Password must contain one capital letter and number')
+        setIsPasswordMatchOpen(true);
+      } else if (formData.password.length < 6) {
+        setIsPasswordMatch('Password must at least 6 characters')
+        setIsPasswordMatchOpen(true);
+      } else if (data.status === true) {
+        setIsModalOpen(true)
+        setModalMessage(data.message)
         setTimeout(() => {
-          setModalMessage(data.message || "Registration successful, you can now login");
-          setIsModalOpen(true)
-          setTimeout(() => {
-            setIsModalOpen(false)
-            router.push("/components/organisms/LoginPage");
-          }, 1000)
-
+          setIsModalOpen(false)
+          router.push('/components/organisms/LoginPage')
         }, 3000)
-      } else if (data.email === formData.email) {
-        setModalMessage(
-          data.message || "Email is already used, please make a new one."
-        );
-        setIsModalOpen(true);
-        setTimeout(() => setIsModalOpen(false), 3000);
-
-        const emailInput = document.querySelector(
-          'input[name="email"]'
-        ) as HTMLInputElement;
-        if (emailInput) {
-          emailInput.style.borderColor = "red";
-        }
-
-        setFormData((prev) => ({
-          ...prev,
-          email: "",
-        }));
       }
 
-    } catch (err) {
-      setModalMessage('Something went wrong. Please try again.')
-      setIsModalOpen(true)
-      setTimeout(() => setIsModalOpen(false), 3000)
+    } catch (error) {
+      setIsEmailDuplicate('Email is already used.')
+      setIsEmailDuplicateOpen(true)
+      const inputs = document.querySelectorAll("input[type=email]");
+      inputs.forEach((input) => {
+        (input as HTMLInputElement).style.borderColor = "red";
+      });
     } finally {
       setLoading(false);
     }
-  };
+
+  }
+
+
 
   return (
     <>
@@ -254,7 +250,7 @@ export default function RegisterPage() {
                     htmlFor="email"
                     className="block text-sm font-medium text-gray-700"
                   >
-                    Email address
+                    Email
                   </label>
                   <input
                     id="email"
@@ -262,10 +258,11 @@ export default function RegisterPage() {
                     type="email"
                     required
                     className="forms-input mt-1 appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                    placeholder="Email address"
+                    placeholder="Enter Username"
                     onChange={handleChange}
                     value={formData.email}
                   />
+                  <p className="text-red-500 text-sm">{isEmailDuplicate}</p>
                 </div>
 
                 <div>
@@ -285,6 +282,7 @@ export default function RegisterPage() {
                     onChange={handleChange}
                     value={formData.password}
                   />
+                  <p className="text-red-500 text-sm">{isPasswordMatch}</p>
                 </div>
 
                 <div>

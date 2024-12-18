@@ -278,10 +278,6 @@ export default function OrderPage() {
                   onChange={(e) => setPayment(e.target.value)}
                 >
                   <option value="Cash on Delivery">Cash on Delivery</option>
-                  <option value="Credit/Debit Cards">Credit/Debit Cards</option>
-                  <option value="PayPal">PayPal</option>
-                  <option value="local wallets">local wallets</option>
-                  <option value="Gcash">Gcash</option>
                 </select>
 
                 <div className="mt-4 text-gray-700">
@@ -324,7 +320,7 @@ export default function OrderPage() {
                   </button>
                   {isModalOpen2 && (
                     <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-800 bg-opacity-70 p-4">
-                      <div className="bg-white p-6 rounded-lg shadow-lg">
+                      <div className="bg-white py-5 px-10 rounded-lg shadow-lg">
                         <p className="text-lg font-semibold text-gray-800">
                           {modalMessage}
                         </p>
@@ -377,7 +373,7 @@ export default function OrderPage() {
                   />
                 </svg>
               </button>
-              <div className="flex flex-col gap-6">
+              <div className="flex flex-col flex-nowrap gap-6 flex-1">
                 <div className="border-b pb-4">
                   <h2 className="text-2xl font-bold text-gray-800">
                     Delivery Information
@@ -400,6 +396,7 @@ export default function OrderPage() {
                     id="fullname"
                     className="w-full p-3 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500 transition-all duration-200"
                     placeholder="Enter your full name"
+                    maxLength={50}
                     onChange={(e) => setFullName(e.target.value)}
                   />
                 </div>
@@ -457,6 +454,7 @@ export default function OrderPage() {
                     id="address"
                     className="w-full p-3 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500 transition-all duration-200"
                     placeholder="Enter your complete address"
+                    maxLength={50}
                     onChange={(e) => setAddress(e.target.value)}
                   />
                 </div>
@@ -471,6 +469,8 @@ export default function OrderPage() {
                   id="message"
                   className="w-full p-3 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500 transition-all duration-200"
                   placeholder="Enter your message"
+                  maxLength={150}
+
                   onChange={(e) => setMessage(e.target.value)}
                 />
 

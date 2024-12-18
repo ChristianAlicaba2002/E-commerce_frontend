@@ -4,23 +4,18 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
-// interface FormData {
-//   email: string;
-//   password: string;
-// }
 
 export default function LoginPage() {
   const router = useRouter();
-  // const [formData, setFormData] = useState<FormData>({
-  //   email: "",
-  //   password: "",
-  // });
-  const [email, setEmail] = useState("");
+
+  const [email, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
+
+
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -28,7 +23,7 @@ export default function LoginPage() {
     setError("");
 
     try {
-      const response = await fetch("http://127.0.0.1:8000/api/Login", {
+      const response = await fetch("http://127.0.0.1:8000/api/auth/Login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -36,33 +31,28 @@ export default function LoginPage() {
         body: JSON.stringify({ email, password }),
       });
 
-      // First try to parse JSON response
-      let data;
-      try {
-        data = await response.json();
-      } catch (e) {
-        setModalMessage("Invalid response from server");
-        setIsModalOpen(true);
-        throw new Error("Invalid response from server");
-      }
+      const data = await response.json();
 
-      if (!response.ok) {
-        setModalMessage("Invalid email or password");
+      if (data.status === "error") {
+        setModalMessage(data.message);
         setIsModalOpen(true);
         const inputs = document.querySelectorAll(".forms-input");
         inputs.forEach((input) => {
           (input as HTMLInputElement).style.borderColor = "red";
         });
-        throw new Error(data.message || "Login failed");
       }
 
-      if (data.user) {
-        setModalMessage("Login Successful!");
-        setIsModalOpen(true);
+      if (data.status === "access") {
         setTimeout(() => {
-          router.push("/components/molecules/Home");
-        }, 1500);
+          setIsModalOpen(true);
+          alert(data.message);
+          setTimeout(() => {
+            router.push("/components/molecules/Home");
+          }, 1500);
+        }, 1000)
       }
+
+
     } catch (error) {
       console.error("Login error:", error);
     } finally {
@@ -73,7 +63,6 @@ export default function LoginPage() {
     }
   };
 
-  // Move password toggle to useEffect to avoid DOM errors
   useEffect(() => {
     const togglePassword = () => {
       const input = document.getElementById("password") as HTMLInputElement;
@@ -127,8 +116,8 @@ export default function LoginPage() {
               )}
               <div className="rounded-md shadow-sm space-y-4">
                 <div>
-                  <label htmlFor="email" className="sr-only">
-                    Email
+                  <label htmlFor="username" className="sr-only">
+                    Username
                   </label>
                   <input
                     id="email"
@@ -136,8 +125,8 @@ export default function LoginPage() {
                     type="email"
                     required
                     className="forms-input appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                    placeholder="Email"
-                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="Enter Username"
+                    onChange={(e) => setUsername(e.target.value)}
                     value={email}
                   />
                 </div>
