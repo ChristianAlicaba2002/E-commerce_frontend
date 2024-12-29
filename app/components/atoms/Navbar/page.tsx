@@ -3,8 +3,15 @@ import React, { useEffect, useState } from "react";
 import logo from "./image/favicon.ico";
 import Image from "next/image";
 import Link from "next/link";
+import FetchApi from "@/app/Hooks/FetchApi";
 
-export default function Navbar() {
+interface NavbarProps {
+  branches?: string[];
+  activeBranch?: string;
+  setActiveBranch?: React.Dispatch<React.SetStateAction<string>>;
+}
+
+export default function Navbar({ branches, activeBranch, setActiveBranch }: NavbarProps) {
   const [showDrawer, setShowDrawer] = useState(false);
   const [favoritesCount, setFavoritesCount] = useState(0);
 
@@ -33,6 +40,11 @@ export default function Navbar() {
     setShowDrawer(!showDrawer);
   };
 
+  // const { getData, error, loading } = FetchApi(
+  //   "http://127.0.0.1:8000/api/AllBranch"
+  // );
+  // const branches = getData ? getData?.branches : error;
+
   return (
     <>
       <link
@@ -58,24 +70,36 @@ export default function Navbar() {
               <ul className="hidden sm:flex justify-end gap-[30%] mr-[5%] sm:ml-[75%]">
                 <li>
                   <Link title="Home" href="/components/molecules/Home">
-                    <i className="fa-solid fa-house text-[25px] text-black transition-all duration-300 hover:text-white" />
+                    {/* <i className="fa-solid fa-house text-[25px] text-black transition-all duration-300 hover:text-white" /> */}
+                    <p className="text-[1re] text-black transition-all duration-300 hover:text-white">Home</p>
                   </Link>
                 </li>
                 <li>
                   <Link title="Products" href="/components/molecules/Products">
-                    <i className="fa-solid fa-shop text-[25px] text-black transition-all duration-300 hover:text-white" />
+                    {/* <i className="fa-solid fa-shop text-[25px] text-black transition-all duration-300 hover:text-white" /> */}
+                    <p className="text-[1rem] text-black transition-all duration-300 hover:text-white">Products</p>
                   </Link>
                 </li>
                 <li>
                   <Link href="/components/organisms/AllFavorites">
                     <div className="relative">
-                      <i className="fa-solid fa-heart text-[25px] text-black transition-all duration-300 hover:text-white"></i>
+                      {/* <i className="fa-solid fa-heart text-[25px] text-black transition-all duration-300 hover:text-white"></i> */}
+                      <p className="text-[1rem] text-black transition-all duration-300 hover:text-white">Favorites</p>
                       <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
                         {favoritesCount}
                       </span>
                     </div>
                   </Link>
                 </li>
+{/* 
+                <li>
+                    <select name="" id="" className="rounded-md p-1">
+                      <option value="">Select Branch</option>
+                      {branches && branches.map((branch: any) => (
+                        <option key={branch.id} value={branch.branch_id}>{branch.branch_name}</option>
+                      ))}
+                    </select>
+                </li> */}
                 <li className="cursor-pointer" title="Menu">
                   <i
                     onClick={clickDrawer}

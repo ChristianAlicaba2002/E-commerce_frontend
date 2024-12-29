@@ -12,6 +12,8 @@ export default function OrderPage() {
   const description = searchParams.get("description");
   const price = searchParams.get("price");
   const image = searchParams.get("image");
+  const branch_id = searchParams.get("branch_id");
+  const branch_name = searchParams.get("branch_name");
 
   const [fullName, setFullName] = useState("");
   const [address, setAddress] = useState("");
@@ -19,6 +21,8 @@ export default function OrderPage() {
   const [message, setMessage] = useState("");
   const [quantity, setQuantity] = useState(1);
   const [payment, setPayment] = useState("Cash on delivery");
+  const [getBranch_id, setGetBranch_id] = useState("");
+  const [getBranch_name, setGetBranch_name] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [showReceipt, setShowReceipt] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -27,9 +31,9 @@ export default function OrderPage() {
   const [trackingNumber, setTrackingNumber] = useState("");
   const [orderStatus, setOrderStatus] = useState(1); // 1: Prepared, 2: Out for Delivery, 3: Received
 
-  console.log({ id, name, description, price, image });
+  console.log({ id, name, description, price, image, branch_id, branch_name });
 
-  if (!id || product_id || !price || !name || !description || !image) {
+  if (!id || product_id || !price || !name || !description || !image || !branch_id || !branch_name) {
     return <div>Invalid product details</div>;
   }
 
@@ -61,6 +65,8 @@ export default function OrderPage() {
           payment: payment,
           total_price: parseFloat(price) * quantity,
           tracking_number: newTrackingNumber,
+          branch_id: getBranch_id,
+          branch_name: getBranch_name,
         }),
       });
 
@@ -92,6 +98,7 @@ export default function OrderPage() {
       return;
     }
   };
+
 
   return (
     <>
@@ -289,6 +296,8 @@ export default function OrderPage() {
                   <h2 className="text-xl font-bold text-gray-800">
                     Your Information:
                   </h2>
+                  <input type="hidden" name="branch_id" value={branch_id} onChange={(e) => setGetBranch_id(e.target.value)} />
+                  <input type="hidden" name="branch_name" value={branch_name} onChange={(e) => setGetBranch_name(e.target.value)} />
                   <p className="mt-2 text-gray-700">Full Name: {fullName}</p>
                   <p className="mt-2 text-gray-700">
                     Phone Number: {phoneNumber}
@@ -381,7 +390,8 @@ export default function OrderPage() {
                   <p className="text-gray-600 text-sm mt-1">
                     Please provide your delivery details below
                   </p>
-                </div>
+                </div>  
+
 
                 <div className="space-y-2">
                   <label

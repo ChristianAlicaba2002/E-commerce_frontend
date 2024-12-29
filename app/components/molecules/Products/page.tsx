@@ -13,11 +13,15 @@ interface ProductType {
   description: string;
   category: string;
   image: string;
+  branch_id: string;
+  branch_name: string;
 }
 
 function ProductPage() {
   const [activeCategory, setActiveCategory] = useState("Pizza");
+  const [activeBranch, setActiveBranch] = useState("All");
   const [favorites, setFavorites] = useState<ProductType[]>([]);
+  const [selectedBranch, setSelectedBranch] = useState("Main Branch");
 
   const { getData, error, loading } = FetchApi(
     "http://127.0.0.1:8000/api/AllSpecialProduct"
@@ -94,7 +98,10 @@ function ProductPage() {
           <div className="w-[90%] ml-[5%] grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {products && products.length > 0 ? (
               products
-                .filter((item: any) => item.category === activeCategory)
+                .filter((item: any) => 
+                  item.category === activeCategory && 
+                  (activeBranch === "All" || item.branch_name === activeBranch)
+                )
                 .map((data: ProductType) => {
                   const imageUrl = `http://127.0.0.1:8000/api/storage/${data.image}`;
                   return (
@@ -135,6 +142,9 @@ function ProductPage() {
                         <p className="text-gray-600 text-xs mb-3 line-clamp-2">
                           {data.description}
                         </p>
+                        <p className="text-gray-600 text-xs mb-3 line-clamp-2">
+                          {data.branch_name}
+                        </p>
 
                         <div className="flex gap-1">
                           <Link
@@ -146,6 +156,8 @@ function ProductPage() {
                                 description: data.description,
                                 price: data.price,
                                 image: data.image,
+                                branch_id: data.branch_id,
+                                branch_name: data.branch_name,
                               },
                             }}
                             className="flex-1 bg-amber-500 text-center text-white text-sm py-1.5 px-3 rounded-md hover:bg-amber-400 transition-colors duration-300"

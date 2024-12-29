@@ -14,6 +14,8 @@ interface ProductType {
   description: string;
   category: string;
   image: string;
+  branch_id: string;
+  branch_name: string;
 }
 
 function AllFovorites() {
@@ -113,6 +115,8 @@ function AllFovorites() {
                         description: data.description,
                         price: data.price,
                         image: data.image,
+                        branch_id: data.branch_id,
+                        branch_name: data.branch_name,
                       },
                     }}
                     className="flex-1 bg-amber-500 text-center text-white py-1.5 px-3 text-sm rounded-md hover:bg-amber-400 transition-colors duration-300 mr-2"

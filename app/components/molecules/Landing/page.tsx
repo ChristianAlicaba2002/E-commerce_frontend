@@ -55,7 +55,7 @@ export default function LandingPage() {
                 opacity-0 animate-[fade-in_0.8s_ease-out_0.6s_forwards]
                 hover:translate-y-[-0.10rem] hover:text-white active:bg-white"
             >
-              Get started
+              View Products
             </Link>
           </div>
 
