@@ -20,6 +20,10 @@ module.exports = {
           "50%": { color: "#ff6b6b" },
           "75%": { color: "#4ecdc4" },
         },
+        rotation: {
+          "0%": { transform: "rotate(0deg)" },
+          "100%": { transform: "rotate(360deg)" },
+        },
         "fade-in": {
           "0%": { opacity: "0" },
           "100%": { opacity: "1" },
@@ -70,6 +74,7 @@ module.exports = {
         "status-transition": "fadeIn 0.5s ease-in-out",
         textColor: "textColor 5s ease infinite",
         "fade-in-down": "fade-in-down 0.3s ease-in-out",
+        rotation: "1s linear infinite",
       },
     },
   },

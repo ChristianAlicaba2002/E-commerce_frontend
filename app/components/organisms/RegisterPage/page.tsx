@@ -13,11 +13,16 @@ interface FormData {
   gender: string;
   email: string;
   password: string;
-  image: string;
 }
 export default function RegisterPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isPasswordMatch, setIsPasswordMatch] = useState('')
+  const [isEmailDuplicate, setIsEmailDuplicate] = useState('')
+  const [modalMessage, setModalMessage] = useState("");
+
   const [formData, setFormData] = useState<FormData>({
     firstName: "",
     lastName: "",
@@ -27,81 +32,90 @@ export default function RegisterPage() {
     gender: "",
     email: "",
     password: "",
-    image: "",
   });
-  const [error, setError] = useState("");
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isPasswordMatch, setIsPasswordMatch] = useState('')
-  const [isPasswordMatchOpen, setIsPasswordMatchOpen] = useState(false)
-  const [isEmailDuplicate, setIsEmailDuplicate] = useState('')
-  const [isEmailDuplicateOpen, setIsEmailDuplicateOpen] = useState(false)
-  const [isSuccess, setIsSuccess] = useState('')
-  const [isSuccessOpen, setIsSuccessOpen] = useState(false)
-  const [modalMessage, setModalMessage] = useState("");
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
-    const { name, value, files } = e.target as HTMLInputElement;
+    const { name, value } = e.target as HTMLInputElement | HTMLSelectElement;
     setFormData((prev) => ({
       ...prev,
-      [name]: files ? files[0] : value,
+      [name]: value,
     }));
   };
 
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    setLoading(true)
+    e.preventDefault();
+    setError("");
+    setIsPasswordMatch('');
+    const inputs = document.querySelector('input[type=password]')
+    if (inputs) {
+      (inputs as HTMLInputElement).style.borderColor = 'gray';
+    }
+
     try {
-      const formDataToSend = new FormData();
-      Object.entries(formData).forEach(([key, value]) => {
-        formDataToSend.append(key, value);
-      });
-
-      for (let [key, value] of formDataToSend.entries()) {
-        console.log(`${key}:`, value);
-      }
-
-      const response = await fetch("http://127.0.0.1:8000/api/auth/Register", {
-        method: "POST",
-        body: formDataToSend,
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      const data = await response.json();
-      console.log("Response data:", data);
-
-      const testPasword = /[A-Z]-[0-9]/
-
-      if (testPasword.test(formData.password)) {
-        setIsPasswordMatch('Password must contain one capital letter and number')
-        setIsPasswordMatchOpen(true);
-      } else if (formData.password.length < 6) {
-        setIsPasswordMatch('Password must at least 6 characters')
-        setIsPasswordMatchOpen(true);
-      } else if (data.status === true) {
-        setIsModalOpen(true)
-        setModalMessage(data.message)
+      setLoading(true);
+      const hasCapitalLetter = /[A-Z]/
+      // Password validation first
+      if (formData.password.length < 8) {
         setTimeout(() => {
-          setIsModalOpen(false)
-          router.push('/components/organisms/LoginPage')
-        }, 3000)
+          setIsPasswordMatch('Password must be at least 8 characters long');
+          const inputs = document.querySelector('input[type=password]')
+          if (inputs) {
+            (inputs as HTMLInputElement).style.borderColor = 'red';
+          }
+        }, 2500)
+
+      } else if (!hasCapitalLetter.test(formData.password)) {
+        setTimeout(() => {
+          setIsPasswordMatch('Password must have at least one Capital letter');
+          const inputs = document.querySelector('input[type=password]')
+          if (inputs) {
+            (inputs as HTMLInputElement).style.borderColor = 'red';
+          }
+        }, 2500);
+
+      } else {
+        const formDataToSend = new FormData();
+        Object.entries(formData).forEach(([key, value]) => {
+          formDataToSend.append(key, value);
+        });
+
+        const response = await fetch("http://127.0.0.1:8000/api/auth/Register", {
+          method: "POST",
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(formDataToSend)
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+
+        if (data.value === false) {
+          setIsEmailDuplicate(data.message);
+          setLoading(false);
+          return;
+        }
+
+        if (data.status === true) {
+          setIsModalOpen(data.message)
+          setIsModalOpen(true)
+          setTimeout(() => {
+            setIsModalOpen(false)
+            router.push('/components/organisms/LoginPage');
+          }, 3000)
+        }
       }
 
     } catch (error) {
-      setIsEmailDuplicate('Email is already used.')
-      setIsEmailDuplicateOpen(true)
-      const inputs = document.querySelectorAll("input[type=email]");
-      inputs.forEach((input) => {
-        (input as HTMLInputElement).style.borderColor = "red";
-      });
+      setError('An error occurred while registering. Please try again.');
     } finally {
       setLoading(false);
     }
-
   }
 
 
@@ -258,7 +272,7 @@ export default function RegisterPage() {
                     type="email"
                     required
                     className="forms-input mt-1 appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                    placeholder="Enter Username"
+                    placeholder="Email"
                     onChange={handleChange}
                     value={formData.email}
                   />
@@ -285,29 +299,17 @@ export default function RegisterPage() {
                   <p className="text-red-500 text-sm">{isPasswordMatch}</p>
                 </div>
 
-                <div>
-                  <label
-                    htmlFor="image"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    Image
-                  </label>
-                  <input
-                    id="image"
-                    name="image"
-                    type="file"
-                    required
-                    className="mt-1 appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                    onChange={handleChange}
-                  />
-                </div>
               </div>
 
               <div>
                 {loading ? (
-                  <div className="flex items-center justify-center py-2 px-4">
-                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-indigo-600"></div>
-                    <span className="ml-2 text-indigo-600">Registering...</span>
+                  <div className="flex items-center justify-center py-4 px-4 rounded-md  bg-indigo-600">
+                    {/* <span className="mr-2 text-indigo-600">Registering</span> */}
+                    <div className="flex space-x-1">
+                      <div className="w-2 h-2 bg-white rounded-full animate-[bounce_0.4s_infinite]"></div>
+                      <div className="w-2 h-2 bg-white rounded-full animate-[bounce_0.5s_infinite_0.2s]"></div>
+                      <div className="w-2 h-2 bg-white rounded-full animate-[bounce_0.5s_infinite_0.4s]"></div>
+                    </div>
                   </div>
                 ) : (
                   <button

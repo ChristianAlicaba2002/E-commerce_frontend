@@ -48,14 +48,14 @@ export default function LandingPage() {
             </p>
 
             <Link
-              href="/components/molecules/Home"
+              href="/components/organisms/LoginPage"
               className="inline-block px-8 py-3 bg-[#FFA500] hover:bg-[#f5b745]
                 text-black font-bold rounded-full transform hover:scale-100
                 transition-all duration-300 ease-in-out shadow-lg hover:shadow-orange-500/50
                 opacity-0 animate-[fade-in_0.8s_ease-out_0.6s_forwards]
                 hover:translate-y-[-0.10rem] hover:text-white active:bg-white"
             >
-              View Products
+              Sign In
             </Link>
           </div>
 

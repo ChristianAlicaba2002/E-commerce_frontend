@@ -33,7 +33,7 @@ export default function LoginPage() {
 
       const data = await response.json();
 
-      if (data.status === "error") {
+      if (data.status === false) {
         setModalMessage(data.message);
         setIsModalOpen(true);
         const inputs = document.querySelectorAll(".forms-input");
@@ -42,7 +42,7 @@ export default function LoginPage() {
         });
       }
 
-      if (data.status === "access") {
+      if (data.status === true) {
         setTimeout(() => {
           setIsModalOpen(true);
           alert(data.message);
