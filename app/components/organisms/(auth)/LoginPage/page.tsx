@@ -1,21 +1,40 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import {  useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { useAuth } from "@/app/Hooks/useAuth";
+
+interface submitForm {
+  email: string,
+  password: string
+}
 
 
 export default function LoginPage() {
+  const { isAuthenticated, login } = useAuth();
   const router = useRouter();
 
-  const [email, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [submitForm, setSubmitForm] = useState<submitForm>({ email: '', password: "" })
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
+  useEffect(() => {
+    if (isAuthenticated) {
+      router.push('/components/molecules/Home');
+    }
+  }, [isAuthenticated, router]);
 
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = e.target as HTMLInputElement | HTMLSelectElement;
+    setSubmitForm((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -23,13 +42,25 @@ export default function LoginPage() {
     setError("");
 
     try {
+      const formDataToSend = new FormData();
+      formDataToSend.append("email", submitForm.email);
+      formDataToSend.append("password", submitForm.password);
+
       const response = await fetch("http://127.0.0.1:8000/api/auth/Login", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password }),
+        body: formDataToSend,
       });
+
+      if (!response.ok) {
+        const contentType = response.headers.get("content-type");
+        if (contentType && contentType.includes("application/json")) {
+          const errorData = await response.json();
+          throw new Error(errorData.message || "Login failed");
+        } else {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+      }
+
 
       const data = await response.json();
 
@@ -40,21 +71,17 @@ export default function LoginPage() {
         inputs.forEach((input) => {
           (input as HTMLInputElement).style.borderColor = "red";
         });
-      }
-
-      if (data.status === true) {
-        setTimeout(() => {
-          setIsModalOpen(true);
-          alert(data.message);
-          setTimeout(() => {
-            router.push("/components/molecules/Home");
-          }, 1500);
-        }, 1000)
+      } else if (data.status === true) {
+        setModalMessage(data.message);
+        setIsModalOpen(true);
+        await new Promise(resolve => setTimeout(resolve, 1500));
+        login();
+        router.push("/components/molecules/Home");
       }
 
 
     } catch (error) {
-      console.error("Login error:", error);
+        setError(error instanceof Error ? error.message : "An unexpected error occurred");
     } finally {
       setTimeout(() => {
         setIsModalOpen(false);
@@ -63,26 +90,9 @@ export default function LoginPage() {
     }
   };
 
-  useEffect(() => {
-    const togglePassword = () => {
-      const input = document.getElementById("password") as HTMLInputElement;
-      if (input) {
-        input.type = input.type === "password" ? "text" : "password";
-      }
-    };
-
-    const showPasswordBtn = document.getElementById("showPassword");
-    if (showPasswordBtn) {
-      showPasswordBtn.addEventListener("click", togglePassword);
-    }
-
-    return () => {
-      const showPasswordBtn = document.getElementById("showPassword");
-      if (showPasswordBtn) {
-        showPasswordBtn.removeEventListener("click", togglePassword);
-      }
-    };
-  }, []);
+  const togglePassword = () => {
+    setShowPassword(!showPassword);
+  };
 
   return (
     <>
@@ -126,8 +136,8 @@ export default function LoginPage() {
                     required
                     className="forms-input appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                     placeholder="Enter Username"
-                    onChange={(e) => setUsername(e.target.value)}
-                    value={email}
+                    onChange={handleChange}
+                    value={submitForm.email}
                   />
                 </div>
                 <div>
@@ -137,27 +147,38 @@ export default function LoginPage() {
                   <input
                     id="password"
                     name="password"
-                    type="password"
+                    type={showPassword ? "text" : "password"}
                     required
                     className="forms-input appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                     placeholder="Password"
-                    onChange={(e) => setPassword(e.target.value)}
-                    value={password}
+                    onChange={handleChange}
+                    value={submitForm.password}
                   />
                 </div>
                 <div>
-                  <input
-                    id="showPassword"
-                    name="showPassword"
-                    type="checkbox"
+                  <button
+                    type="button"
+                    onClick={togglePassword}
                     className="mr-2"
-                  />
-                  <label
-                    className="text-gray-500 text-[.90rem] -mt-10 cursor-pointer"
-                    htmlFor="showPassword"
                   >
-                    Show Password
-                  </label>
+                    <i className={`fas fa-eye${showPassword ? '' : '-slash'}`}></i>
+                  </button>
+                  {showPassword && (
+                    <label
+                      className="text-gray-500 text-[.90rem] -mt-10 cursor-pointer"
+                      htmlFor="showPassword"
+                    >
+                      Hide Password
+                    </label>
+                  )}
+                  {!showPassword && (
+                    <label
+                      className="text-gray-500 text-[.90rem] -mt-10 cursor-pointer"
+                      htmlFor="showPassword"
+                    >
+                      Show Password
+                    </label>
+                  )}
                 </div>
               </div>
               <div>

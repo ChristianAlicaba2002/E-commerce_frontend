@@ -5,6 +5,8 @@ import picture1 from "./images/homeBackground.jpg";
 import Navbar from "../../atoms/Navbar/page";
 import Link from "next/link";
 import FetchApi from "@/app/Hooks/FetchApi";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/app/Hooks/useAuth";
 interface Product {
   id: number;
   name: string;
@@ -21,6 +23,15 @@ function MainPage() {
   );
   loading;
   const product = getData ? getData?.products : error;
+  const { isAuthenticated } = useAuth();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      router.push('/components/organisms/LoginPage');
+    }
+  }, [isAuthenticated, router]);
+
 
   const toggleFavorite = (product: Product) => {
     setFavorite((prev) => {
@@ -49,7 +60,7 @@ function MainPage() {
   return (
     <>
       <Navbar />
-      <title>Home</title>
+      {/* <title>Home</title> */}
       <section>
         <div className="container absolute w-[100%] h-[100vh] md:h-[100%] md:w-[100%] lg:w-[100%] lg:h-[100%]">
           <Image

@@ -4,6 +4,7 @@ import logo from "./image/favicon.ico";
 import Image from "next/image";
 import Link from "next/link";
 import FetchApi from "@/app/Hooks/FetchApi";
+import { useAuth } from "@/app/Hooks/useAuth";
 
 interface NavbarProps {
   branches?: string[];
@@ -40,6 +41,7 @@ export default function Navbar({ branches, activeBranch, setActiveBranch }: Navb
     setShowDrawer(!showDrawer);
   };
 
+  const { logout } = useAuth();
   // const { getData, error, loading } = FetchApi(
   //   "http://127.0.0.1:8000/api/AllBranch"
   // );
@@ -57,7 +59,7 @@ export default function Navbar({ branches, activeBranch, setActiveBranch }: Navb
 
       <header>
         <div className="w-full h-[5vh] bg-white fixed z-[80]">
-          <Link href="/components/molecules/Landing">
+          <Link href="">
             <Image
               className="absolute w-[70px] h-[55px] ml-[15px] sm:ml-[35px] mt-[0.50rem] rounded-[50%] shadow-orange-500"
               src={logo}
@@ -91,15 +93,7 @@ export default function Navbar({ branches, activeBranch, setActiveBranch }: Navb
                     </div>
                   </Link>
                 </li>
-{/* 
-                <li>
-                    <select name="" id="" className="rounded-md p-1">
-                      <option value="">Select Branch</option>
-                      {branches && branches.map((branch: any) => (
-                        <option key={branch.id} value={branch.branch_id}>{branch.branch_name}</option>
-                      ))}
-                    </select>
-                </li> */}
+
                 <li className="cursor-pointer" title="Menu">
                   <i
                     onClick={clickDrawer}
@@ -194,6 +188,12 @@ export default function Navbar({ branches, activeBranch, setActiveBranch }: Navb
                   >
                     Contact us
                   </Link>
+                </li>
+
+                <li className="text-[1rem] sm:text-[1.2rem] cursor-pointer text-[black] hover:text-red-600 block"
+                  onClick={logout}
+                  >
+                  Logout
                 </li>
 
               </ul>

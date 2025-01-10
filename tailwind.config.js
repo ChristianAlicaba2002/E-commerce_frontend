@@ -4,6 +4,7 @@ module.exports = {
     "./app/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/pages/**/*.{js,ts,jsx,tsx,mdx}",
   ],
+  // darkMode: 'class',
   theme: {
     extend: {
       keyframes: {

@@ -7,7 +7,6 @@ import { useSearchParams } from "next/navigation";
 export default function OrderPage() {
   const searchParams = useSearchParams();
   const id = searchParams.get("id");
-  const product_id = searchParams.get("product_id");
   const name = searchParams.get("name");
   const description = searchParams.get("description");
   const price = searchParams.get("price");
@@ -33,7 +32,7 @@ export default function OrderPage() {
 
   console.log({ id, name, description, price, image, branch_id, branch_name });
 
-  if (!id || product_id || !price || !name || !description || !image || !branch_id || !branch_name) {
+  if (!id || !price || !name || !description || !image || !branch_id || !branch_name) {
     return <div>Invalid product details</div>;
   }
 
@@ -268,8 +267,11 @@ export default function OrderPage() {
                 <h1 className="text-2xl lg:text-3xl font-bold text-gray-800">
                   {name}
                 </h1>
-                <p className="mt-2 lg:mt-3 text-base lg:text-lg text-gray-600">
+                <p className="mt-2 lg:mt-3 text-base lg:text-md text-gray-600">
                   {description}
+                </p>
+                <p className="mt-2 lg:mt-3 text-base lg:text-sm text-gray-600">
+                  {branch_name}
                 </p>
                 <p className="mt-4 lg:mt-6 mb-3 lg:mb-5 text-xl lg:text-2xl font-semibold text-orange-500">
                   &#8369;{price}.00
@@ -390,7 +392,7 @@ export default function OrderPage() {
                   <p className="text-gray-600 text-sm mt-1">
                     Please provide your delivery details below
                   </p>
-                </div>  
+                </div>
 
 
                 <div className="space-y-2">

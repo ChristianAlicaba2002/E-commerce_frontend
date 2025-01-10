@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
+
 interface FormData {
   firstName: string;
   lastName: string;
@@ -19,7 +20,12 @@ export default function RegisterPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isPasswordMatch, setIsPasswordMatch] = useState('')
+  const [passwordValidation, setPasswordValidation] = useState<{[key: string]: boolean}>({
+    Length: false,
+    Capital: false,
+    Number: false,
+    Special: false
+  });
   const [isEmailDuplicate, setIsEmailDuplicate] = useState('')
   const [modalMessage, setModalMessage] = useState("");
 
@@ -47,47 +53,48 @@ export default function RegisterPage() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setLoading(true);
     setError("");
-    setIsPasswordMatch('');
+    // setIsPasswordMatch('');
+    setIsEmailDuplicate('');
     const inputs = document.querySelector('input[type=password]')
     if (inputs) {
       (inputs as HTMLInputElement).style.borderColor = 'gray';
     }
 
     try {
-      setLoading(true);
-      const hasCapitalLetter = /[A-Z]/
-      // Password validation first
-      if (formData.password.length < 8) {
-        setTimeout(() => {
-          setIsPasswordMatch('Password must be at least 8 characters long');
-          const inputs = document.querySelector('input[type=password]')
-          if (inputs) {
-            (inputs as HTMLInputElement).style.borderColor = 'red';
-          }
-        }, 2500)
+      // Password validation
+      const validations: string[] = [];
+      const newValidationState = {
+        Length: formData.password.length >= 8,
+        Capital: /[A-Z]/.test(formData.password),
+        Number: /[0-9]/.test(formData.password),
+        Special: /[!@#$%^&*(),.?":{}|<>]/.test(formData.password)
+      };
+      
+      setPasswordValidation(newValidationState);
 
-      } else if (!hasCapitalLetter.test(formData.password)) {
-        setTimeout(() => {
-          setIsPasswordMatch('Password must have at least one Capital letter');
-          const inputs = document.querySelector('input[type=password]')
-          if (inputs) {
-            (inputs as HTMLInputElement).style.borderColor = 'red';
-          }
-        }, 2500);
+      Object.entries(newValidationState).forEach(([key, valid]) => {
+        if (!valid) validations.push(key);
+      });
 
-      } else {
-        const formDataToSend = new FormData();
-        Object.entries(formData).forEach(([key, value]) => {
-          formDataToSend.append(key, value);
-        });
+      if (validations.length > 0) {
+        const inputs = document.querySelector('input[type=password]');
+        if (inputs) {
+          (inputs as HTMLInputElement).style.borderColor = 'red';
+        }
+        setLoading(false);
+        return;
+      }
+
+      const formDataToSend = new FormData();
+      Object.entries(formData).forEach(([key, value]) => {
+        formDataToSend.append(key, value);
+      });
 
         const response = await fetch("http://127.0.0.1:8000/api/auth/Register", {
           method: "POST",
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(formDataToSend)
+          body: formDataToSend
         });
 
         if (!response.ok) {
@@ -97,22 +104,22 @@ export default function RegisterPage() {
 
         if (data.value === false) {
           setIsEmailDuplicate(data.message);
-          setLoading(false);
-          return;
         }
-
         if (data.status === true) {
-          setIsModalOpen(data.message)
-          setIsModalOpen(true)
           setTimeout(() => {
-            setIsModalOpen(false)
-            router.push('/components/organisms/LoginPage');
-          }, 3000)
-        }
+            setIsModalOpen(true)
+            setModalMessage(data.message)
+            setTimeout(() => {
+              setIsModalOpen(false)
+              router.push('/components/organisms/LoginPage');
+            }, 3000)
+          })
+
       }
 
     } catch (error) {
-      setError('An error occurred while registering. Please try again.');
+      setError(`${error}`)
+      setLoading(false);
     } finally {
       setLoading(false);
     }
@@ -296,7 +303,25 @@ export default function RegisterPage() {
                     onChange={handleChange}
                     value={formData.password}
                   />
-                  <p className="text-red-500 text-sm">{isPasswordMatch}</p>
+                  {Object.keys(passwordValidation).length > 0 && (
+                    <div className="mt-2 text-sm">
+                      <p>Password must contain:</p>
+                      <ul className="list-none pl-5">
+                        <li className={passwordValidation.Length ? "text-green-500" : "text-red-500"}>
+                          {passwordValidation.Length ? "✓" : "•"} At least 8 characters
+                        </li>
+                        <li className={passwordValidation.Capital ? "text-green-500" : "text-red-500"}>
+                          {passwordValidation.Capital ? "✓" : "•"} At least one capital letter
+                        </li>
+                        <li className={passwordValidation.Number ? "text-green-500" : "text-red-500"}>
+                          {passwordValidation.Number ? "✓" : "•"} At least one number
+                        </li>
+                        <li className={passwordValidation.Special ? "text-green-500" : "text-red-500"}>
+                          {passwordValidation.Special ? "✓" : "•"} At least one special character (!@#$%^&*)
+                        </li>
+                      </ul>
+                    </div>
+                  )}
                 </div>
 
               </div>
