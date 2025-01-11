@@ -26,7 +26,8 @@ function page() {
         <div className="bg-white dark:bg-gray-800 flex justify-center items-center w-[100%] h-[100vh]">
           <div className="border border-gray-200 p-5 rounded-md shadow-lg shadow-orange-300">
             <div className="flex items-end gap-1">
-              <span className="text-6xl font-semibold dark:text-white">D</span>
+              <span className="text-6xl font-semibold dark:text-white">E</span>
+              <span className="text-6xl font-semibold dark:text-white">C</span>
               <svg
                 className="animate-spin"
                 fill="#F97316"
@@ -55,8 +56,9 @@ function page() {
                   transform="translate(-41 -25)"
                 />
               </svg> */}
-              <span className="text-6xl font-semibold dark:text-white">N</span>
-              <span className="text-6xl font-semibold text-orange-500">Macc</span>
+              <span className="text-6xl font-semibold dark:text-white">M</span>
+              <span className="text-6xl font-semibold dark:text-white">M</span>
+              <span className="text-6xl font-semibold text-orange-500">ERCE</span>
             </div>
           </div>
         </div>;

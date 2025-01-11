@@ -20,14 +20,14 @@ export default function RegisterPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [passwordValidation, setPasswordValidation] = useState<{[key: string]: boolean}>({
+  const [isEmailDuplicate, setIsEmailDuplicate] = useState('')
+  const [modalMessage, setModalMessage] = useState("");
+  const [passwordValidation, setPasswordValidation] = useState<{ [key: string]: boolean }>({
     Length: false,
     Capital: false,
     Number: false,
     Special: false
   });
-  const [isEmailDuplicate, setIsEmailDuplicate] = useState('')
-  const [modalMessage, setModalMessage] = useState("");
 
   const [formData, setFormData] = useState<FormData>({
     firstName: "",
@@ -50,17 +50,28 @@ export default function RegisterPage() {
     }));
   };
 
+  function PasswordError() {
+    const inputs = document.querySelector('input[type=password]')
+    if (inputs) {
+      (inputs as HTMLInputElement).style.borderColor = 'gray';
+    }
+  }
+
+  function EmailError() {
+    const emailInput = document.querySelector('input[type=email]')
+    if (emailInput) {
+      (emailInput as HTMLInputElement).style.borderColor = 'red'
+    }
+  }
+
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
     setError("");
-    // setIsPasswordMatch('');
     setIsEmailDuplicate('');
-    const inputs = document.querySelector('input[type=password]')
-    if (inputs) {
-      (inputs as HTMLInputElement).style.borderColor = 'gray';
-    }
+    PasswordError()
+    EmailError()
 
     try {
       // Password validation
@@ -71,7 +82,7 @@ export default function RegisterPage() {
         Number: /[0-9]/.test(formData.password),
         Special: /[!@#$%^&*(),.?":{}|<>]/.test(formData.password)
       };
-      
+
       setPasswordValidation(newValidationState);
 
       Object.entries(newValidationState).forEach(([key, valid]) => {
@@ -79,10 +90,7 @@ export default function RegisterPage() {
       });
 
       if (validations.length > 0) {
-        const inputs = document.querySelector('input[type=password]');
-        if (inputs) {
-          (inputs as HTMLInputElement).style.borderColor = 'red';
-        }
+        PasswordError()
         setLoading(false);
         return;
       }
@@ -92,34 +100,36 @@ export default function RegisterPage() {
         formDataToSend.append(key, value);
       });
 
-        const response = await fetch("http://127.0.0.1:8000/api/auth/Register", {
-          method: "POST",
-          body: formDataToSend
-        });
+      const response = await fetch("http://127.0.0.1:8000/api/auth/Register", {
+        method: "POST",
+        body: formDataToSend
+      });
 
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const data = await response.json();
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
 
-        if (data.value === false) {
-          setIsEmailDuplicate(data.message);
-        }
-        if (data.status === true) {
+      if (data.status === false) {
+        setIsEmailDuplicate(data.message);
+        alert(data.message)
+        EmailError()
+      }
+      if (data.status === true) {
+        setTimeout(() => {
+          setIsModalOpen(true)
+          setModalMessage(data.message)
           setTimeout(() => {
-            setIsModalOpen(true)
-            setModalMessage(data.message)
-            setTimeout(() => {
-              setIsModalOpen(false)
-              router.push('/components/organisms/LoginPage');
-            }, 3000)
-          })
+            setIsModalOpen(false)
+            router.push('/components/organisms/LoginPage');
+          }, 3000)
+        })
 
       }
 
     } catch (error) {
-      setError(`${error}`)
       setLoading(false);
+      setError(`${error}`)
     } finally {
       setLoading(false);
     }
@@ -303,7 +313,7 @@ export default function RegisterPage() {
                     onChange={handleChange}
                     value={formData.password}
                   />
-                  {Object.keys(passwordValidation).length > 0 && (
+                  {(Object.keys(passwordValidation).length > 0 && (
                     <div className="mt-2 text-sm">
                       <p>Password must contain:</p>
                       <ul className="list-none pl-5">
@@ -321,7 +331,7 @@ export default function RegisterPage() {
                         </li>
                       </ul>
                     </div>
-                  )}
+                  ))}
                 </div>
 
               </div>
