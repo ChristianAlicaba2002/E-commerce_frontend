@@ -1,1 +1,1 @@
-This project is for frontEnd project called E-commerce.
+This system is for frontEnd project called E-commerce.
