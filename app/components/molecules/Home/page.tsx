@@ -16,6 +16,18 @@ interface Product {
   email: string;
 }
 
+async function feth() {
+  const response = await fetch('http://127.0.0.1:8000/api/allDonMacProduct')
+  // .then(res => console.log(res))
+  // .then(data => console.log(data))  
+
+  const data = await response.json();
+  console.log(data)
+
+
+}
+
+
 function MainPage() {
   const [favorite, setFavorite] = useState<Product[]>([]);
   const { getData, error, loading } = FetchApi(
